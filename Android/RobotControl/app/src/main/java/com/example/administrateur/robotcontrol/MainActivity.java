@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.administrateur.robotcontrol.R;
+
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
@@ -13,7 +15,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "de.tavendo.test1";
     private final WebSocketConnection mConnection = new WebSocketConnection();
-    private static final String ip = "192.168.1.132:9000";
+    private static final String ip = "192.168.0.26:8082";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity
 
     private void start() {
 
-        final String wsuri = "ws://"+ip;
+        final String wsuri = "ws://"+ip+"?id=0";
 
         try {
             mConnection.connect(wsuri, new WebSocketHandler() {

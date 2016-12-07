@@ -1,0 +1,13 @@
+Include=include/
+Src=src/
+
+all: WebsocketServer.o LogStream.o $(Src)main.cpp
+	g++ -std=c++0x WebsocketServer.o LogStream.o $(Src)main.cpp -o WebsocketServer.exe -L lib/ -I include/ -l boost_system
+WebsocketServer.o: $(Include)WebsocketServer.h $(Src)WebsocketServer.cpp 
+	g++ -std=c++0x -c $(Src)WebsocketServer.cpp -L lib/ -I include/
+LogStream.o: $(Include)LogStream.h $(Src)LogStream.cpp
+	g++ -std=c++0x -c $(Src)LogStream.cpp -L lib/ -I include/
+clean:
+	rm -rf *.o
+mrproper: clean
+	rm -f WebsocketServer.exe
