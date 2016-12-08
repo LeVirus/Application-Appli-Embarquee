@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "de.tavendo.test1";
     private final WebSocketConnection mConnection = new WebSocketConnection();
-    private static final String ip = "192.168.0.26:8082";
+    private static final String ip = "192.168.0.46:8082";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

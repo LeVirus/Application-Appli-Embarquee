@@ -1,6 +1,7 @@
 #include "websocketpp/server.hpp"
 #include "websocketpp/config/asio_no_tls.hpp"
 #include <boost/thread/locks.hpp>
+#include <boost/thread/shared_mutex.hpp>
 #include "LogStream.h"
 
 using namespace std;
