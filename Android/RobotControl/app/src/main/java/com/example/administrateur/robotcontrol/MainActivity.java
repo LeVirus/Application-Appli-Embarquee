@@ -232,10 +232,39 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
                 double angle = angle(x,y);
-                if (angle == 90 && y > 0) {
-                    if (!mConnection.isConnected()) { startConnexion(); }
-                    if (mConnection.isConnected()) { mConnection.sendTextMessage("movement;wheels;"); }
+                String wheelsRotation;
+                if (angle >= 0 && angle < 36) {
+                    wheelsRotation = "movement;wheels;rightForward";
                 }
+                else if (angle >= 36 && angle < 72) {
+                    wheelsRotation = "movement;wheels;rightTop";
+                }
+                else if (angle >= 72 && angle < 108) {
+                    wheelsRotation = "movement;wheels;straightforward";
+                }
+                else if (angle >= 108 && angle < 144) {
+                    wheelsRotation = "movement;wheels;leftTop";
+                }
+                else if (angle >= 144 && angle < 180) {
+                    wheelsRotation = "movement;wheels;leftForward";
+                }
+                else if (angle >= 180 && angle < 216) {
+                    wheelsRotation = "movement;wheels;leftReverse";
+                }
+                else if (angle >= 216 && angle < 252) {
+                    wheelsRotation = "movement;wheels;leftBottom";
+                }
+                else if (angle >= 252 && angle < 288) {
+                    wheelsRotation = "movement;wheels;straightforwardReverse";
+                }
+                else if (angle >= 288 && angle < 324) {
+                    wheelsRotation = "movement;wheels;rightBottom";
+                }
+                else if (angle >= 324 && angle < 360) {
+                    wheelsRotation = "movement;wheels;rightReverse";
+                }
+                if (!mConnection.isConnected()) { startConnexion(); }
+                if (mConnection.isConnected()) { mConnection.sendTextMessage(wheelsRotation); }
             }
 
             private double distanceBetween(double x1, double y1, double x2, double y2)
@@ -245,10 +274,15 @@ public class MainActivity extends AppCompatActivity
 
             private double angle(double x, double y)
             {
+                if (y == 0) { return 0; }
                 double d = distanceBetween(0,0,x,y);
                 double d2 = distanceBetween(0,0,x,0);
                 double cos = d2/d;
-                return Math.acos(cos);
+                double angle = Math.acos(cos);
+                if (x < 0 && y >= 0) { angle = 180 - angle; }
+                else if (x < 0 && y < 0) { angle = 180 + angle; }
+                else if (x >= 0 && y < 0) { angle = 360 - angle; }
+                return angle;
             }
         });
 
