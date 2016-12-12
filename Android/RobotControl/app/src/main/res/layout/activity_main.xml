@@ -9,18 +9,102 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
+            <TableLayout
+                android:layout_weight="0.4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <CheckBox
+                        android:text="@string/speed_lock_checkbox_text"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/speedLockcheckBox" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <SeekBar
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/speedSeekBar"
+                        android:max="100"
+                        android:progress="50" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@android:drawable/ic_btn_speak_now"
+                        android:id="@+id/vocalButton"
+                        android:layout_weight="1"
+                        android:textSize="15dp"
+                        android:layout_alignParentTop="true" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/controlPanelLayout"
+                android:background="@drawable/control_interface_background_2"
+                android:layout_width="250px"
+                android:layout_height="250px">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:minWidth="20dp"
+                    android:layout_height="20dp"
+                    android:minHeight="20dp"
+                    app:srcCompat="@android:drawable/ic_notification_overlay"
+                    android:id="@+id/pointerImageView" />
+            </LinearLayout>
+
         </TableRow>
 
-        <TableRow
+        <!--<TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:text="@string/speed_label"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+
+                android:textSize="25dp"
+                android:id="@+id/speedTextView" />
+
+            <SeekBar
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:id="@+id/speedSeekBar"
+                android:max="100"
+                android:progress="50" />
         </TableRow>
 
         <TableRow
@@ -28,21 +112,63 @@
             android:layout_height="wrap_content"
             android:padding="0dp">
 
+            <TableLayout
+                android:layout_weight="0.4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:text="@string/reverse"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/reverseTextView" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <Switch
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/reverseSwitch"
+                        android:textSize="15dp"
+                        android:checked="false"
+                        android:textOn="@string/on"
+                        android:textOff="@string/off" />
+
+                </TableRow>
+
+            </TableLayout>
+
             <ToggleButton
                 android:text="ToggleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/toggleButton"
-                android:layout_row="1"
-                android:layout_column="2"
-                android:textOff="Marche avant"
-                android:textOn="Marche arrière" />
+                android:id="@+id/moveToggleButton"
+                android:layout_weight="0.4"
+                android:textSize="15dp"
+                android:textOff="@string/move"
+                android:textOn="@string/stop"
+                android:checked="false" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/ic_btn_speak_now"
-                android:id="@+id/imageButton6"
+                android:id="@+id/vocalButton"
+                android:layout_weight="0.2"
+                android:textSize="15dp"
                 android:layout_gravity="right"
                 android:layout_alignParentTop="true" />
 
@@ -54,43 +180,17 @@
 
             <ImageButton
                 android:src="@drawable/ic_arrow_left_128"
-                android:layout_width="74dp"
-                android:layout_height="113dp"
-                android:id="@+id/imageButton3"
-                android:elevation="0dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_row="2"
-                android:layout_column="0" />
+                android:layout_height="112dp"
+                android:layout_weight="0.5"
+                android:id="@+id/leftButton" />
 
             <ImageButton
                 android:src="@drawable/ic_arrow_right_128"
-                android:layout_width="74dp"
+                android:layout_weight="0.5"
                 android:layout_height="112dp"
-                android:id="@+id/imageButton4"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/imageButton3"
-                android:layout_row="2"
-                android:layout_column="1" />
+                android:id="@+id/rightButton" />
 
-            <ImageButton
-                android:layout_width="39dp"
-                android:layout_height="36dp"
-                app:srcCompat="@mipmap/ic_launcher"
-                android:layout_marginTop="79dp"
-                android:id="@+id/imageButton2"
-                android:layout_marginRight="13dp"
-                android:layout_marginEnd="13dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_row="2"
-                android:layout_column="3" />
-
-        </TableRow>
+        </TableRow>-->
     </TableLayout>
 
 </RelativeLayout>

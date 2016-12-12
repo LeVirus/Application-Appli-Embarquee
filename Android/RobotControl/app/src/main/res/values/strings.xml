@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">RobotControl</string>
+    <string name="move">Avancer</string>
+    <string name="stop">Stop</string>
+    <string name="reverse">Marche arrière</string>
+    <string name="forward">Marche avant</string>
+    <string name="speed_label">Vitesse : </string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
+    <string name="speed_lock_checkbox_text">Vitesse bloquée</string>
 </resources>
