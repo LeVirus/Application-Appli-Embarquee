@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "Socket info";
     private final WebSocketConnection mConnection = new WebSocketConnection();
-    private static final String ip = "192.168.0.35:8082";
+    private static final String ip = "10.122.4.87:8082";
 
     private ImageButton leftButton;
     private ImageButton rightButton;
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
 
             private int largerCircleRay = 115;
             private String state = "stopped";
+            private String wheelsState = "none";
             private long lastSpeedChangeTime = 0;
 
             @Override
@@ -232,39 +233,61 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
                 double angle = angle(x,y);
-                String wheelsRotation;
-                if (angle >= 0 && angle < 36) {
+                Log.i("ANGLE","x="+x+" y="+y+" et angle="+angle);
+                String wheelsRotation = "";
+                boolean stateChanged = false;
+                if (angle >= 0 && angle < 36 && wheelsState.compareTo("rightForward") != 0) {
+                    stateChanged = true;
+                    wheelsState = "rightForward";
                     wheelsRotation = "movement;wheels;rightForward";
                 }
-                else if (angle >= 36 && angle < 72) {
+                else if (angle >= 36 && angle < 72 && wheelsState.compareTo("rightTop") != 0) {
+                    stateChanged = true;
+                    wheelsState = "rightTop";
                     wheelsRotation = "movement;wheels;rightTop";
                 }
-                else if (angle >= 72 && angle < 108) {
+                else if (angle >= 72 && angle < 108 && wheelsState.compareTo("straightforward") != 0) {
+                    stateChanged = true;
+                    wheelsState = "straightforward";
                     wheelsRotation = "movement;wheels;straightforward";
                 }
-                else if (angle >= 108 && angle < 144) {
+                else if (angle >= 108 && angle < 144 && wheelsState.compareTo("leftTop") != 0) {
+                    stateChanged = true;
+                    wheelsState = "leftTop";
                     wheelsRotation = "movement;wheels;leftTop";
                 }
-                else if (angle >= 144 && angle < 180) {
+                else if (angle >= 144 && angle < 180 && wheelsState.compareTo("leftForward") != 0) {
+                    stateChanged = true;
+                    wheelsState = "leftForward";
                     wheelsRotation = "movement;wheels;leftForward";
                 }
-                else if (angle >= 180 && angle < 216) {
+                else if (angle >= 180 && angle < 216 && wheelsState.compareTo("leftReverse") != 0) {
+                    stateChanged = true;
+                    wheelsState = "leftReverse";
                     wheelsRotation = "movement;wheels;leftReverse";
                 }
-                else if (angle >= 216 && angle < 252) {
+                else if (angle >= 216 && angle < 252 && wheelsState.compareTo("leftBottom") != 0) {
+                    stateChanged = true;
+                    wheelsState = "leftBottom";
                     wheelsRotation = "movement;wheels;leftBottom";
                 }
-                else if (angle >= 252 && angle < 288) {
+                else if (angle >= 252 && angle < 288 && wheelsState.compareTo("straightforwardReverse") != 0) {
+                    stateChanged = true;
+                    wheelsState = "straightforwardReverse";
                     wheelsRotation = "movement;wheels;straightforwardReverse";
                 }
-                else if (angle >= 288 && angle < 324) {
+                else if (angle >= 288 && angle < 324 && wheelsState.compareTo("rightBottom") != 0) {
+                    stateChanged = true;
+                    wheelsState = "rightBottom";
                     wheelsRotation = "movement;wheels;rightBottom";
                 }
-                else if (angle >= 324 && angle < 360) {
+                else if (angle >= 324 && angle < 360 && wheelsState.compareTo("rightReverse") != 0) {
+                    stateChanged = true;
+                    wheelsState = "rightReverse";
                     wheelsRotation = "movement;wheels;rightReverse";
                 }
                 if (!mConnection.isConnected()) { startConnexion(); }
-                if (mConnection.isConnected()) { mConnection.sendTextMessage(wheelsRotation); }
+                if (mConnection.isConnected() && stateChanged) { mConnection.sendTextMessage(wheelsRotation); }
             }
 
             private double distanceBetween(double x1, double y1, double x2, double y2)
@@ -274,15 +297,25 @@ public class MainActivity extends AppCompatActivity
 
             private double angle(double x, double y)
             {
-                if (y == 0) { return 0; }
+                if (y == 0) { return 0; }
                 double d = distanceBetween(0,0,x,y);
                 double d2 = distanceBetween(0,0,x,0);
                 double cos = d2/d;
-                double angle = Math.acos(cos);
+                double angle = toDegrees(Math.acos(cos));
                 if (x < 0 && y >= 0) { angle = 180 - angle; }
                 else if (x < 0 && y < 0) { angle = 180 + angle; }
                 else if (x >= 0 && y < 0) { angle = 360 - angle; }
                 return angle;
+            }
+
+            private double toDegrees (double angle)
+            {
+                return angle * (180 / Math.PI);
+            }
+
+            private double toRadians (double angle)
+            {
+                return angle * (Math.PI / 180);
             }
         });
 
