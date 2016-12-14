@@ -1,3 +1,6 @@
+#ifndef WEBSOCKETSERVER_H
+#define WEBSOCKETSERVER_H
+
 #include "websocketpp/server.hpp"
 #include "websocketpp/config/asio_no_tls.hpp"
 #include <boost/thread/locks.hpp>
@@ -32,3 +35,5 @@ class WebsocketServer
 		static void on_close(websocketpp::connection_hdl hdl);
 		static void on_message(websocketpp::connection_hdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr message);
 };
+
+#endif

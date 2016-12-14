@@ -1,9 +1,0 @@
-Include=include/
-Src=src/
-
-all: $(Include)WebsocketServer.h $(Src)WebsocketServer.cpp $(Include)LogStream.h $(Src)LogStream.cpp $(Src)main.cpp
-	D:\SysGCC\Raspberry\bin\arm-linux-gnueabihf-g++.exe -ftime-report -std=c++0x $(Src)WebsocketServer.cpp $(Src)LogStream.cpp $(Src)main.cpp -o WebsocketServer.exe -static-libstdc++ -L lib -I include/ -l boost_system_arm -l boost_thread_arm -lpthread
-clean:
-	rm -rf *.o
-mrproper: clean
-	rm -f WebsocketServer.exe
