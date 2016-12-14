@@ -5,6 +5,7 @@
 #include <string.h>
 #include <vector>
 #include "Utilities.h"
+#include "RobotControl.h"
 
 using namespace std;
 
