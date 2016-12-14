@@ -1,17 +1,17 @@
 #include "RobotControl.h"
 
-int motorLTIN1 = 2;
-int motorLTIN2 = 3;
-int motorLTPWM = 0;
-int motorRTIN1 = 4;
-int motorRTIN2 = 5;
-int motorRTPWM = 1;
-int motorLDIN1 = 13;
-int motorLDIN2 = 14;
-int motorLDPWM = 12;
-int motorRDIN1 = 10;
-int motorRDIN2 = 11;
-int motorRDPWM = 6;
+int RobotControl::motorLTIN1 = 2;
+int RobotControl::motorLTIN2 = 3;
+int RobotControl::motorLTPWM = 0;
+int RobotControl::motorRTIN1 = 4;
+int RobotControl::motorRTIN2 = 5;
+int RobotControl::motorRTPWM = 1;
+int RobotControl::motorLDIN1 = 13;
+int RobotControl::motorLDIN2 = 14;
+int RobotControl::motorLDPWM = 12;
+int RobotControl::motorRDIN1 = 10;
+int RobotControl::motorRDIN2 = 11;
+int RobotControl::motorRDPWM = 6;
 
 void RobotControl::move()
 {

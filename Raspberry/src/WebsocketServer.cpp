@@ -128,7 +128,9 @@ void WebsocketServer::on_close(connection_hdl hdl)
 
 void WebsocketServer::on_message(connection_hdl hdl, websocketpp::server<websocketpp::config::asio>::message_ptr message)
 {
-    std::cout << message->get_payload() << std::endl;
+    std::string msg = message->get_payload();
+    std::cout << msg << std::endl;
+    RequestAnalyser::analyse(msg);
 }
 
 bool WebsocketServer::sendData(string id, string data)

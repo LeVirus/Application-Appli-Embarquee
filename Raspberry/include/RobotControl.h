@@ -3,7 +3,7 @@
 
 
 #include <iostream>
-#include <wiringPi.h>
+#include <wiringPi/wiringPi.h>
 
 using namespace std;
 
@@ -17,18 +17,18 @@ class RobotControl
 		static void setSpeed(int speed);
 	
 	private:
-		int motorLTIN1;
-		int motorLTIN2;
-		int motorLTPWM;
-		int motorRTIN1;
-		int motorRTIN2;
-		int motorRTPWM;
-		int motorLDIN1;
-		int motorLDIN2;
-		int motorLDPWM;
-		int motorRDIN1;
-		int motorRDIN2;
-		int motorRDPWM;
+		static int motorLTIN1;
+		static int motorLTIN2;
+		static int motorLTPWM;
+		static int motorRTIN1;
+		static int motorRTIN2;
+		static int motorRTPWM;
+		static int motorLDIN1;
+		static int motorLDIN2;
+		static int motorLDPWM;
+		static int motorRDIN1;
+		static int motorRDIN2;
+		static int motorRDPWM;
 };
 
 #endif
