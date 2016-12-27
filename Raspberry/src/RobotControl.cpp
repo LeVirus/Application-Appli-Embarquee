@@ -15,6 +15,7 @@ int RobotControl::motorRDPWM = 6;
 
 void RobotControl::move()
 {
+	std::cout << "RobotControl Move" << std::endl;
 	wiringPiSetup();
 	pinMode(motorLTIN1, OUTPUT);
 	pinMode(motorLTIN2, OUTPUT);

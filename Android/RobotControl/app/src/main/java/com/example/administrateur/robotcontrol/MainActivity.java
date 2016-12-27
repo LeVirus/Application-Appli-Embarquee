@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "Socket info";
     private final WebSocketConnection mConnection = new WebSocketConnection();
-    private static final String ip = "10.122.4.87:8082";
+    private static final String ip = "192.168.0.35:8082";
 
     private ImageButton leftButton;
     private ImageButton rightButton;
