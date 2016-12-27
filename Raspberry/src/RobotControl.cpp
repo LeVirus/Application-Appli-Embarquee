@@ -29,16 +29,16 @@ void RobotControl::move()
 	pinMode(motorRDIN1, OUTPUT);
 	pinMode(motorRDIN2, OUTPUT);
 	pinMode(motorRDPWM, OUTPUT);
+
+	softPwmCreate(motorLTPWM, 100, 100);
+	softPwmCreate(motorRTPWM, 100, 100);
+	softPwmCreate(motorLDPWM, 100, 100);
+	softPwmCreate(motorRDPWM, 100, 100);
 	
 	pwmWrite(motorLTPWM, 50);
 	pwmWrite(motorRTPWM, 50);
 	pwmWrite(motorLDPWM, 50);
 	pwmWrite(motorRDPWM, 50);
-	
-	pwmSetRange(motorLTPWM, 1024);
-	pwmSetRange(motorRTPWM, 1024);
-	pwmSetRange(motorLDPWM, 1024);
-	pwmSetRange(motorRDPWM, 1024);
 	
 	digitalWrite(motorLTPWM, HIGH);
 	digitalWrite(motorRTPWM, HIGH);
