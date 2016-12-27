@@ -12,7 +12,7 @@ std::vector<std::string> Utilities::split(std::string s, std::string delimiter)
 		std::cout << "Split While step 1, pos = " << pos << std::endl;
 		if (posPrec+delimiterSize < pos) {
 			std::cout << "Split While step 2, pos = " << pos << std::endl;
-			v.push_back(s.substr(posPrec+delimiterSize, pos));
+			v.push_back(s.substr(posPrec+delimiterSize, pos-(posPrec+delimiterSize)));
 			std::cout << "Split While step 3, pos = " << pos << std::endl;
 		}
 		posPrec = pos;
