@@ -30,20 +30,20 @@ void RobotControl::move()
 	pinMode(motorRDIN2, OUTPUT);
 	pinMode(motorRDPWM, OUTPUT);
 
-	softPwmCreate(motorLTPWM, 100, 100);
-	softPwmCreate(motorRTPWM, 100, 100);
 	softPwmCreate(motorLDPWM, 100, 100);
 	softPwmCreate(motorRDPWM, 100, 100);
-	
-	pwmWrite(motorLTPWM, 50);
-	pwmWrite(motorRTPWM, 50);
+	softPwmCreate(motorLTPWM, 100, 100);
+	softPwmCreate(motorRTPWM, 100, 100);
+
 	pwmWrite(motorLDPWM, 50);
 	pwmWrite(motorRDPWM, 50);
+	pwmWrite(motorLTPWM, 50);
+	pwmWrite(motorRTPWM, 50);
 	
-	digitalWrite(motorLTPWM, HIGH);
-	digitalWrite(motorRTPWM, HIGH);
 	digitalWrite(motorLDPWM, HIGH);
 	digitalWrite(motorRDPWM, HIGH);
+	digitalWrite(motorLTPWM, HIGH);
+	digitalWrite(motorRTPWM, HIGH);
 }
 
 void RobotControl::stop()
@@ -59,6 +59,11 @@ void RobotControl::stop()
 	pwmWrite(motorRTPWM, 0);
 	pwmWrite(motorLDPWM, 0);
 	pwmWrite(motorRDPWM, 0);
+	
+	softPwmWrite(motorLTPWM, 0);
+	softPwmWrite(motorRTPWM, 0);
+	softPwmWrite(motorLDPWM, 0);
+	softPwmWrite(motorRDPWM, 0);
 }
 
 void RobotControl::forward()
