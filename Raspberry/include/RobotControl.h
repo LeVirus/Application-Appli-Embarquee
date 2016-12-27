@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <wiringPi/wiringPi.h>
+#include <wiringPi/softPwm.h>
 
 using namespace std;
 
