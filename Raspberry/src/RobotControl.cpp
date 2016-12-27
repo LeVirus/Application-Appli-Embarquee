@@ -11,7 +11,7 @@ int RobotControl::motorLDIN2 = 14;
 int RobotControl::motorLDPWM = 12;
 int RobotControl::motorRDIN1 = 10;
 int RobotControl::motorRDIN2 = 11;
-int RobotControl::motorRDPWM = 6;
+int RobotControl::motorRDPWM = 6;						
 
 void RobotControl::move()
 {
@@ -35,6 +35,10 @@ void RobotControl::move()
 	pwmWrite(motorLDPWM, 50);
 	pwmWrite(motorRDPWM, 50);
 	
+	pwmSetRange(motorLTPWM, 1024);
+	pwmSetRange(motorRTPWM, 1024);
+	pwmSetRange(motorLDPWM, 1024);
+	pwmSetRange(motorRDPWM, 1024);
 	
 	digitalWrite(motorLTPWM, HIGH);
 	digitalWrite(motorRTPWM, HIGH);
