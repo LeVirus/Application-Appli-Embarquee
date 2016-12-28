@@ -16,5 +16,9 @@ void RequestAnalyser::analyse(string request)
 		else if (requestSplitted.at(1) == "reverse") {
 			RobotControl::reverse();
 		}
+		else if (requestSplitted.at(1) == "speed") {
+			int speed = std::stoi(requestSplitted.at(2));
+			RobotControl::setSpeed(speed);
+		}
 	}
 }
