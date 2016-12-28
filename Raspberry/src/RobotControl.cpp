@@ -15,7 +15,6 @@ int RobotControl::motorRDPWM = 6;
 
 void RobotControl::move()
 {
-	std::cout << "RobotControl Move" << std::endl;
 	wiringPiSetup();
 	pinMode(motorLTIN1, OUTPUT);
 	pinMode(motorLTIN2, OUTPUT);
@@ -48,7 +47,7 @@ void RobotControl::move()
 
 void RobotControl::stop()
 {
-	wiringPiSetup();
+	//wiringPiSetup();
 	
 	digitalWrite(motorLTPWM, LOW);
 	digitalWrite(motorRTPWM, LOW);
@@ -68,7 +67,7 @@ void RobotControl::stop()
 
 void RobotControl::forward()
 {
-	wiringPiSetup();
+	//wiringPiSetup();
 	
 	digitalWrite(motorLTIN1, HIGH);
 	digitalWrite(motorLTIN2, LOW);
@@ -82,7 +81,7 @@ void RobotControl::forward()
 
 void RobotControl::reverse()
 {
-	wiringPiSetup();
+	//wiringPiSetup();
 	
 	digitalWrite(motorLTIN1, LOW);
 	digitalWrite(motorLTIN2, HIGH);
