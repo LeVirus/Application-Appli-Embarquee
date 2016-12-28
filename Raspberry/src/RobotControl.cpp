@@ -11,11 +11,13 @@ int RobotControl::motorLDIN2 = 14;
 int RobotControl::motorLDPWM = 12;
 int RobotControl::motorRDIN1 = 10;
 int RobotControl::motorRDIN2 = 11;
-int RobotControl::motorRDPWM = 6;						
+int RobotControl::motorRDPWM = 6;
+bool RobotControl::initialised = false;						
 
-void RobotControl::move()
+void RobotControl::init()
 {
 	wiringPiSetup();
+	
 	pinMode(motorLTIN1, OUTPUT);
 	pinMode(motorLTIN2, OUTPUT);
 	pinMode(motorLTPWM, OUTPUT);
@@ -28,12 +30,19 @@ void RobotControl::move()
 	pinMode(motorRDIN1, OUTPUT);
 	pinMode(motorRDIN2, OUTPUT);
 	pinMode(motorRDPWM, OUTPUT);
-
+	
 	softPwmCreate(motorLDPWM, 100, 100);
 	softPwmCreate(motorRDPWM, 100, 100);
 	softPwmCreate(motorLTPWM, 100, 100);
 	softPwmCreate(motorRTPWM, 100, 100);
+	
+	initialised = true;
+}
 
+void RobotControl::move()
+{
+	if (!initialised) { init(); }
+	
 	pwmWrite(motorLDPWM, 50);
 	pwmWrite(motorRDPWM, 50);
 	pwmWrite(motorLTPWM, 50);
@@ -47,7 +56,7 @@ void RobotControl::move()
 
 void RobotControl::stop()
 {
-	wiringPiSetup();
+	if (!initialised) { init(); }
 	
 	digitalWrite(motorLTPWM, LOW);
 	digitalWrite(motorRTPWM, LOW);
@@ -67,7 +76,7 @@ void RobotControl::stop()
 
 void RobotControl::forward()
 {
-	wiringPiSetup();
+	if (!initialised) { init(); }
 	
 	digitalWrite(motorLTIN1, HIGH);
 	digitalWrite(motorLTIN2, LOW);
@@ -80,8 +89,8 @@ void RobotControl::forward()
 }
 
 void RobotControl::reverse()
-{
-	wiringPiSetup();
+{	
+	if (!initialised) { init(); }
 	
 	digitalWrite(motorLTIN1, LOW);
 	digitalWrite(motorLTIN2, HIGH);
@@ -96,6 +105,7 @@ void RobotControl::reverse()
 void RobotControl::setSpeed(int speed)
 {
 	if (speed >= 0 && speed <= 100) {
+		if (!initialised) { init(); }
 		softPwmWrite(motorLTPWM, speed);
 		softPwmWrite(motorRTPWM, speed);
 		softPwmWrite(motorLDPWM, speed);

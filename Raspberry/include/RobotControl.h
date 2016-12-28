@@ -11,6 +11,7 @@ using namespace std;
 class RobotControl
 {	
 	public:
+		static void init();
 		static void move();
 		static void stop();
 		static void forward();
@@ -30,6 +31,7 @@ class RobotControl
 		static int motorRDIN1;
 		static int motorRDIN2;
 		static int motorRDPWM;
+		static bool initialised;
 };
 
 #endif
