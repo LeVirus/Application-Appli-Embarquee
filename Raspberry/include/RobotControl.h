@@ -32,6 +32,7 @@ class RobotControl
 		static int motorRDIN2;
 		static int motorRDPWM;
 		static bool initialised;
+		static int speed;
 };
 
 #endif

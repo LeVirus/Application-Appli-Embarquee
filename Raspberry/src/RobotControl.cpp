@@ -12,7 +12,8 @@ int RobotControl::motorLDPWM = 12;
 int RobotControl::motorRDIN1 = 10;
 int RobotControl::motorRDIN2 = 11;
 int RobotControl::motorRDPWM = 6;
-bool RobotControl::initialised = false;						
+bool RobotControl::initialised = false;
+int RobotControl::speed = 100;						
 
 void RobotControl::init()
 {
@@ -47,6 +48,11 @@ void RobotControl::move()
 	pwmWrite(motorRDPWM, 50);
 	pwmWrite(motorLTPWM, 50);
 	pwmWrite(motorRTPWM, 50);
+	
+	softPwmWrite(motorLTPWM, speed);
+	softPwmWrite(motorRTPWM, speed);
+	softPwmWrite(motorLDPWM, speed);
+	softPwmWrite(motorRDPWM, speed);
 	
 	digitalWrite(motorLDPWM, HIGH);
 	digitalWrite(motorRDPWM, HIGH);
@@ -110,5 +116,6 @@ void RobotControl::setSpeed(int speed)
 		softPwmWrite(motorRTPWM, speed);
 		softPwmWrite(motorLDPWM, speed);
 		softPwmWrite(motorRDPWM, speed);
+		RobotControl::speed = speed;
 	}
 }
