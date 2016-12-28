@@ -47,7 +47,7 @@ void RobotControl::move()
 
 void RobotControl::stop()
 {
-	//wiringPiSetup();
+	wiringPiSetup();
 	
 	digitalWrite(motorLTPWM, LOW);
 	digitalWrite(motorRTPWM, LOW);
@@ -67,7 +67,7 @@ void RobotControl::stop()
 
 void RobotControl::forward()
 {
-	//wiringPiSetup();
+	wiringPiSetup();
 	
 	digitalWrite(motorLTIN1, HIGH);
 	digitalWrite(motorLTIN2, LOW);
@@ -81,7 +81,7 @@ void RobotControl::forward()
 
 void RobotControl::reverse()
 {
-	//wiringPiSetup();
+	wiringPiSetup();
 	
 	digitalWrite(motorLTIN1, LOW);
 	digitalWrite(motorLTIN2, HIGH);
@@ -95,5 +95,10 @@ void RobotControl::reverse()
 
 void RobotControl::setSpeed(int speed)
 {
-	
+	if (speed >= 0 && speed <= 100) {
+		softPwmWrite(motorLTPWM, speed);
+		softPwmWrite(motorRTPWM, speed);
+		softPwmWrite(motorLDPWM, speed);
+		softPwmWrite(motorRDPWM, speed);
+	}
 }
