@@ -119,3 +119,58 @@ void RobotControl::setSpeed(int speed)
 		RobotControl::speed = speed;
 	}
 }
+
+void RobotControl::turnRightForward()
+{
+	if (!initialised) { init(); }
+	
+	digitalWrite(motorLTIN1, HIGH);
+	digitalWrite(motorLTIN2, LOW);
+	digitalWrite(motorRTIN1, LOW);
+	digitalWrite(motorRTIN2, HIGH);
+	digitalWrite(motorLDIN1, HIGH);
+	digitalWrite(motorLDIN2, LOW);
+	digitalWrite(motorRDIN1, HIGH);
+	digitalWrite(motorRDIN2, LOW);
+}
+void RobotControl::turnLeftForward()
+{
+	if (!initialised) { init(); }
+	
+	digitalWrite(motorLTIN1, LOW);
+	digitalWrite(motorLTIN2, HIGH);
+	digitalWrite(motorRTIN1, HIGH);
+	digitalWrite(motorRTIN2, LOW);
+	digitalWrite(motorLDIN1, HIGH);
+	digitalWrite(motorLDIN2, LOW);
+	digitalWrite(motorRDIN1, HIGH);
+	digitalWrite(motorRDIN2, LOW);
+}
+
+void RobotControl::turnRightReverse()
+{
+	if (!initialised) { init(); }
+	
+	digitalWrite(motorLTIN1, LOW);
+	digitalWrite(motorLTIN2, HIGH);
+	digitalWrite(motorRTIN1, LOW);
+	digitalWrite(motorRTIN2, HIGH);
+	digitalWrite(motorLDIN1, LOW);
+	digitalWrite(motorLDIN2, HIGH);
+	digitalWrite(motorRDIN1, HIGH);
+	digitalWrite(motorRDIN2, LOW);
+}
+
+void RobotControl::turnLeftReverse()
+{
+	if (!initialised) { init(); }
+	
+	digitalWrite(motorLTIN1, LOW);
+	digitalWrite(motorLTIN2, HIGH);
+	digitalWrite(motorRTIN1, LOW);
+	digitalWrite(motorRTIN2, HIGH);
+	digitalWrite(motorLDIN1, HIGH);
+	digitalWrite(motorLDIN2, LOW);
+	digitalWrite(motorRDIN1, LOW);
+	digitalWrite(motorRDIN2, HIGH);
+}

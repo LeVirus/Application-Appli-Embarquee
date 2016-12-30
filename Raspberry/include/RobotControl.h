@@ -17,6 +17,10 @@ class RobotControl
 		static void forward();
 		static void reverse();
 		static void setSpeed(int speed);
+		static void turnRightForward();
+		static void turnLeftForward();
+		static void turnRightReverse();
+		static void turnLeftReverse();
 	
 	private:
 		static int motorLTIN1;
