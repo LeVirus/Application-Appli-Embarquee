@@ -201,5 +201,5 @@ void RobotControl::stopCameraRotation()
 {
 	if (!initialised) { init(); }
 	
-	softPwmWrite(servomotor,15);
+	softPwmWrite(servomotor,0);
 }
