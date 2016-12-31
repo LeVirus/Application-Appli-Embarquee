@@ -43,7 +43,7 @@ void RobotControl::init()
 	softPwmCreate(motorLTPWM, 100, 100);
 	softPwmCreate(motorRTPWM, 100, 100);
 	
-	softPwmCreate(servomotor, 15, 100);
+	softPwmCreate(servomotor, 15, 200);
 	
 	initialised = true;
 }
