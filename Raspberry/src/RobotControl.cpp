@@ -187,6 +187,7 @@ void RobotControl::turnCameraLeft()
 {
 	if (!initialised) { init(); }
 	
+	softPwmCreate(servomotor, 15, 200);
 	softPwmWrite(servomotor,10);
 }
 
@@ -194,6 +195,7 @@ void RobotControl::turnCameraRight()
 {
 	if (!initialised) { init(); }
 	
+	softPwmCreate(servomotor, 15, 200);
 	softPwmWrite(servomotor,20);
 }
 
@@ -201,5 +203,6 @@ void RobotControl::stopCameraRotation()
 {
 	if (!initialised) { init(); }
 	
+	softPwmCreate(servomotor, 15, 0);
 	softPwmWrite(servomotor,15.995);
 }
