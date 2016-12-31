@@ -7,7 +7,7 @@ void RequestAnalyser::analyse(string request)
 		if (requestSplitted.at(1) == "move") {
 			RobotControl::move();
 		}
-		if (requestSplitted.at(1) == "stop") {
+		else if (requestSplitted.at(1) == "stop") {
 			RobotControl::stop();
 		}
 		else if (requestSplitted.at(1) == "forward") {
@@ -52,6 +52,14 @@ void RequestAnalyser::analyse(string request)
 			else if (direction == "rightReverse") {
 				RobotControl::turnRightReverse();
 			}
+		}
+	}
+	else if (requestSplitted.at(0) == "camera") {
+		if (requestSplitted.at(1) == "turnLeft") {
+			RobotControl::turnCameraLeft();
+		}
+		else if (requestSplitted.at(1) == "turnRight") {
+			RobotControl::turnCameraRight();
 		}
 	}
 }

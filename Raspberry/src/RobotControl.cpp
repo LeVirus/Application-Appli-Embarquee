@@ -13,11 +13,16 @@ int RobotControl::motorRDIN1 = 10;
 int RobotControl::motorRDIN2 = 11;
 int RobotControl::motorRDPWM = 6;
 bool RobotControl::initialised = false;
-int RobotControl::speed = 100;						
+int RobotControl::speed = 100;
+int RobotControl::servomotor = 7;	
+int RobotControl::servomotorCyclicRatio = 50;					
 
 void RobotControl::init()
 {
-	wiringPiSetup();
+	if (wiringPiSetup() == -1) {
+		std::cout << "Erreur, autorisation root requise." << std::endl;
+		exit(1);
+	};
 	
 	pinMode(motorLTIN1, OUTPUT);
 	pinMode(motorLTIN2, OUTPUT);
@@ -32,10 +37,14 @@ void RobotControl::init()
 	pinMode(motorRDIN2, OUTPUT);
 	pinMode(motorRDPWM, OUTPUT);
 	
+	pinMode(servomotor, OUTPUT);
+	
 	softPwmCreate(motorLDPWM, 100, 100);
 	softPwmCreate(motorRDPWM, 100, 100);
 	softPwmCreate(motorLTPWM, 100, 100);
 	softPwmCreate(motorRTPWM, 100, 100);
+	
+	softPwmCreate(servomotor, servomotorCyclicRatio, 100);
 	
 	initialised = true;
 }
@@ -173,4 +182,24 @@ void RobotControl::turnLeftReverse()
 	digitalWrite(motorLDIN2, LOW);
 	digitalWrite(motorRDIN1, LOW);
 	digitalWrite(motorRDIN2, HIGH);
+}
+
+void RobotControl::turnCameraLeft()
+{
+	if (!initialised) { init(); }
+	
+	if (servomotorCyclicRatio > 0) { 
+		servomotorCyclicRatio--;
+		softPwmWrite(servomotor,servomotorCyclicRatio);
+	}
+}
+
+void RobotControl::turnCameraRight()
+{
+	if (!initialised) { init(); }
+	
+	if (servomotorCyclicRatio < 100) { 
+		servomotorCyclicRatio++;
+		softPwmWrite(servomotor,servomotorCyclicRatio);
+	}
 }
