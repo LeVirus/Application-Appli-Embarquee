@@ -61,7 +61,7 @@ void RequestAnalyser::analyse(string request)
 		else if (requestSplitted.at(1) == "turnRight") {
 			RobotControl::turnCameraRight();
 		}
-		else if (requestSplitted.at(1) == "turnRight") {
+		else if (requestSplitted.at(1) == "stopRotation") {
 			RobotControl::stopCameraRotation();
 		}
 	}
