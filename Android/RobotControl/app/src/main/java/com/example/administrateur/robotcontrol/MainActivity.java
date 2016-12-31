@@ -340,14 +340,18 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (handler != null) { return true; }
+                    /*if (handler != null) { return true; }
                     handler = new Handler();
-                    handler.postDelayed(sendMessage, 100);
+                    handler.postDelayed(sendMessage, 100);*/
+                    if (!mConnection.isConnected()) { startConnexion(); }
+                    mConnection.sendTextMessage("camera;turnRight");
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (handler == null) return true;
+                    /*if (handler == null) return true;
                     handler.removeCallbacks(sendMessage);
-                    handler = null;
+                    handler = null;*/
+                    if (!mConnection.isConnected()) { startConnexion(); }
+                    mConnection.sendTextMessage("camera;stopRotation");
                 }
                 return false;
             }
@@ -355,7 +359,7 @@ public class MainActivity extends AppCompatActivity
 
         turnCameraLeftButton.setOnTouchListener(new View.OnTouchListener() {
 
-            private Handler handler;
+            /*private Handler handler;
 
             Runnable sendMessage = new Runnable() {
                 @Override
@@ -364,19 +368,23 @@ public class MainActivity extends AppCompatActivity
                     mConnection.sendTextMessage("camera;turnLeft");
                     handler.postDelayed(this, 500);
                 }
-            };
+            };*/
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (handler != null) { return true; }
+                    /*if (handler != null) { return true; }
                     handler = new Handler();
-                    handler.postDelayed(sendMessage, 100);
+                    handler.postDelayed(sendMessage, 100);*/
+                    if (!mConnection.isConnected()) { startConnexion(); }
+                    mConnection.sendTextMessage("camera;turnLeft");
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (handler == null) return true;
+                    /*if (handler == null) return true;
                     handler.removeCallbacks(sendMessage);
-                    handler = null;
+                    handler = null;*/
+                    if (!mConnection.isConnected()) { startConnexion(); }
+                    mConnection.sendTextMessage("camera;stopRotation");
                 }
                 return false;
             }

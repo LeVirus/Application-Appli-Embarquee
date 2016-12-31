@@ -14,8 +14,7 @@ int RobotControl::motorRDIN2 = 11;
 int RobotControl::motorRDPWM = 6;
 bool RobotControl::initialised = false;
 int RobotControl::speed = 100;
-int RobotControl::servomotor = 7;	
-int RobotControl::servomotorCyclicRatio = 50;					
+int RobotControl::servomotor = 7;					
 
 void RobotControl::init()
 {
@@ -44,7 +43,7 @@ void RobotControl::init()
 	softPwmCreate(motorLTPWM, 100, 100);
 	softPwmCreate(motorRTPWM, 100, 100);
 	
-	softPwmCreate(servomotor, servomotorCyclicRatio, 100);
+	softPwmCreate(servomotor, 15, 200);
 	
 	initialised = true;
 }
@@ -188,18 +187,19 @@ void RobotControl::turnCameraLeft()
 {
 	if (!initialised) { init(); }
 	
-	if (servomotorCyclicRatio > 0) { 
-		servomotorCyclicRatio--;
-		softPwmWrite(servomotor,servomotorCyclicRatio);
-	}
+	softPwmWrite(servomotor,10);
 }
 
 void RobotControl::turnCameraRight()
 {
 	if (!initialised) { init(); }
 	
-	if (servomotorCyclicRatio < 100) { 
-		servomotorCyclicRatio++;
-		softPwmWrite(servomotor,servomotorCyclicRatio);
-	}
+	softPwmWrite(servomotor,20);
+}
+
+void RobotControl::stopCameraRotation()
+{
+	if (!initialised) { init(); }
+	
+	softPwmWrite(servomotor,15);
 }

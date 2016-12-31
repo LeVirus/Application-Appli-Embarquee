@@ -23,6 +23,7 @@ class RobotControl
 		static void turnLeftReverse();
 		static void turnCameraLeft();
 		static void turnCameraRight();
+		static void stopCameraRotation();
 	
 	private:
 		static int motorLTIN1;
@@ -40,7 +41,6 @@ class RobotControl
 		static bool initialised;
 		static int speed;
 		static int servomotor;
-		static int servomotorCyclicRatio;
 };
 
 #endif
