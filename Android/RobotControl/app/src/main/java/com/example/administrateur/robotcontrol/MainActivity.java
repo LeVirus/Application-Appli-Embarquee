@@ -1,6 +1,7 @@
 package com.example.administrateur.robotcontrol;
 
 import android.graphics.Point;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity
     private ImageButton vocalButton;
     private ToggleButton moveToggleButton;
     private Switch reverseSwitch;
+    private ImageButton turnCameraLeftButton;
+    private ImageButton turnCameraRightButton;
     private SeekBar speedSeekBar;
     private ImageView pointerImageView;
     private LinearLayout controlPanelLayout;
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         //Récupération des éléments graphiques
         /*leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);*/
+        turnCameraLeftButton = (ImageButton) findViewById(R.id.turnCameraLeftButton);
+        turnCameraRightButton = (ImageButton) findViewById(R.id.turnCameraRightButton);
         vocalButton = (ImageButton) findViewById(R.id.vocalButton);
         /*moveToggleButton = (ToggleButton) findViewById(R.id.moveToggleButton);
         reverseSwitch = (Switch) findViewById(R.id.reverseSwitch);*/
@@ -316,6 +321,64 @@ public class MainActivity extends AppCompatActivity
             private double toRadians (double angle)
             {
                 return angle * (Math.PI / 180);
+            }
+        });
+
+        turnCameraRightButton.setOnTouchListener(new View.OnTouchListener() {
+
+            private Handler handler;
+
+            Runnable sendMessage = new Runnable() {
+                @Override
+                public void run() {
+                    if (!mConnection.isConnected()) { startConnexion(); }
+                    mConnection.sendTextMessage("camera;turnRight");
+                    handler.postDelayed(this, 500);
+                }
+            };
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (handler != null) { return true; }
+                    handler = new Handler();
+                    handler.postDelayed(sendMessage, 100);
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (handler == null) return true;
+                    handler.removeCallbacks(sendMessage);
+                    handler = null;
+                }
+                return false;
+            }
+        });
+
+        turnCameraLeftButton.setOnTouchListener(new View.OnTouchListener() {
+
+            private Handler handler;
+
+            Runnable sendMessage = new Runnable() {
+                @Override
+                public void run() {
+                    if (!mConnection.isConnected()) { startConnexion(); }
+                    mConnection.sendTextMessage("camera;turnLeft");
+                    handler.postDelayed(this, 500);
+                }
+            };
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (handler != null) { return true; }
+                    handler = new Handler();
+                    handler.postDelayed(sendMessage, 100);
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (handler == null) return true;
+                    handler.removeCallbacks(sendMessage);
+                    handler = null;
+                }
+                return false;
             }
         });
 

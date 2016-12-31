@@ -59,12 +59,45 @@
 
                     <ImageButton
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         app:srcCompat="@android:drawable/ic_btn_speak_now"
                         android:id="@+id/vocalButton"
                         android:layout_weight="1"
                         android:textSize="15dp"
                         android:layout_alignParentTop="true" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Contrôles camera"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:textSize="15dp"
+                        android:id="@+id/cameraTextView" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:src="@drawable/ic_arrow_left_48"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:id="@+id/turnCameraLeftButton" />
+
+                    <ImageButton
+                        android:src="@drawable/ic_arrow_right_48"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/turnCameraRightButton" />
 
                 </TableRow>
 
