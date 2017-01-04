@@ -24,6 +24,8 @@ class RobotControl
 		static void turnCameraLeft();
 		static void turnCameraRight();
 		static void stopCameraRotation();
+		static void speddUp();
+		static void slowDown();
 	
 	private:
 		static int motorLTIN1;
