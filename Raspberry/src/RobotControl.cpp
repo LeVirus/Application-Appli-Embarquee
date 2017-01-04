@@ -128,6 +128,28 @@ void RobotControl::setSpeed(int speed)
 	}
 }
 
+void RobotControl::speedUp()
+{
+	if (!initialised) { init(); }
+	speed = speed + 10;
+	if (speed > 100) { speed = 100; }
+	softPwmWrite(motorLTPWM, speed);
+	softPwmWrite(motorRTPWM, speed);
+	softPwmWrite(motorLDPWM, speed);
+	softPwmWrite(motorRDPWM, speed);
+}
+
+void RobotControl::slowDown()
+{
+	if (!initialised) { init(); }
+	speed = speed - 10;
+	if (speed < 0) { speed = 0; }
+	softPwmWrite(motorLTPWM, speed);
+	softPwmWrite(motorRTPWM, speed);
+	softPwmWrite(motorLDPWM, speed);
+	softPwmWrite(motorRDPWM, speed);
+}
+
 void RobotControl::turnRightForward()
 {
 	if (!initialised) { init(); }
@@ -183,20 +205,22 @@ void RobotControl::turnLeftReverse()
 	digitalWrite(motorRDIN2, HIGH);
 }
 
-void RobotControl::turnCameraLeft()
-{
-	if (!initialised) { init(); }
-	
-	softPwmCreate(servomotor, 15, 200);
-	softPwmWrite(servomotor,10);
-}
-
 void RobotControl::turnCameraRight()
 {
 	if (!initialised) { init(); }
 	
 	softPwmCreate(servomotor, 15, 200);
-	softPwmWrite(servomotor,20);
+	//Valeur pour la vitesse de rotation maximale : 10
+	softPwmWrite(servomotor,13);
+}
+
+void RobotControl::turnCameraLeft()
+{
+	if (!initialised) { init(); }
+	
+	softPwmCreate(servomotor, 15, 200);
+	//Valeur pour la vitesse de rotation maximale : 20
+	softPwmWrite(servomotor,17);
 }
 
 void RobotControl::stopCameraRotation()

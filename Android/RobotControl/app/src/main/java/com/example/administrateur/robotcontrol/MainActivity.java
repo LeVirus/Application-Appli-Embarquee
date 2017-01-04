@@ -1,10 +1,18 @@
 package com.example.administrateur.robotcontrol;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -13,18 +21,37 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.VideoView;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
+import edu.cmu.pocketsphinx.Assets;
+import edu.cmu.pocketsphinx.Hypothesis;
+import edu.cmu.pocketsphinx.RecognitionListener;
+import edu.cmu.pocketsphinx.SpeechRecognizer;
 
-public class MainActivity extends AppCompatActivity
+import static android.widget.Toast.makeText;
+import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
+
+public class MainActivity extends AppCompatActivity implements RecognitionListener
 {
 
     private static final String TAG = "Socket info";
     private final WebSocketConnection mConnection = new WebSocketConnection();
     private static final String ip = "192.168.0.35:8082";
+    private static final String streamAddress = "http://192.168.0.35:8081";
+
+    private VocalCommandAnalyser vocalCommandAnalyser;
 
     private ImageButton leftButton;
     private ImageButton rightButton;
@@ -37,6 +64,11 @@ public class MainActivity extends AppCompatActivity
     private ImageView pointerImageView;
     private LinearLayout controlPanelLayout;
     private CheckBox speedLockCheckBox;
+    private VideoView videoView;
+    private TableRow controlTableRow;
+
+    private MjpegView mv;
+    private static final int MENU_QUIT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,18 +79,53 @@ public class MainActivity extends AppCompatActivity
         //Initialisation de la connexion avec le WebSocketServer
         startConnexion();
 
+        vocalCommandAnalyser = new VocalCommandAnalyser();
+
         //Récupération des éléments graphiques
         /*leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);*/
         turnCameraLeftButton = (ImageButton) findViewById(R.id.turnCameraLeftButton);
         turnCameraRightButton = (ImageButton) findViewById(R.id.turnCameraRightButton);
         vocalButton = (ImageButton) findViewById(R.id.vocalButton);
+        controlTableRow = (TableRow) findViewById(R.id.controlTableRow);
         /*moveToggleButton = (ToggleButton) findViewById(R.id.moveToggleButton);
         reverseSwitch = (Switch) findViewById(R.id.reverseSwitch);*/
         speedSeekBar = (SeekBar) findViewById(R.id.speedSeekBar);
         pointerImageView = (ImageView) findViewById(R.id.pointerImageView);
         controlPanelLayout = (LinearLayout) findViewById(R.id.controlPanelLayout);
         speedLockCheckBox = (CheckBox) findViewById(R.id.speedLockcheckBox);
+        /*videoView = (VideoView) findViewById(R.id.videoView);
+
+        videoView.setVideoURI(Uri.parse("http://192.168.0.35:8081"));
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();
+            }
+        });*/
+
+        //Lecture du stream vidéo
+        mv = new MjpegView(this);
+        TableRow videoViewTableRow = (TableRow) findViewById(R.id.videoViewTableRow);
+        TableRow.LayoutParams params = new TableRow.LayoutParams();
+        params.width = TableRow.LayoutParams.MATCH_PARENT;
+        params.gravity = Gravity.CENTER;
+        params.weight = 1;
+        mv.setLayoutParams(params);
+        mv.setMinimumWidth(videoViewTableRow.getWidth());
+        videoViewTableRow.addView(mv);
+
+        new StreamReader().execute();
+
+
+        //Commandes vocales
+        vocalButton.setOnClickListener(new View.OnClickListener() {
+
+           @Override
+           public void onClick(View v) {
+               promptSpeechInput();
+           }
+       });
 
         //Centrage du pointeur de contrôle
         pointerImageView.post(new Runnable() {
@@ -82,7 +149,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getActionMasked();
                 int controlPanelLayoutHorizontalStart = (int) controlPanelLayout.getX();
-                int controlPanelLayoutVerticalStart = (int) controlPanelLayout.getY();
+                int controlPanelLayoutVerticalStart = (int) controlTableRow.getY();
                 int controlPanelLayoutWidth = controlPanelLayout.getWidth();
                 int controlPanelLayoutHeight = controlPanelLayout.getHeight();
                 int pointerImageViewWidth = pointerImageView.getWidth();
@@ -118,7 +185,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         else {
                             x -= controlPanelLayoutHorizontalStart;
-                            y += controlPanelLayoutVerticalStart;
+                            y -= controlPanelLayoutVerticalStart;
                         }
                         //On envoie des ordres à la raspberry si nécessaire
                         if (xOrtho >= 0) { xOrtho -= (pointerImageViewWidth/2); }
@@ -326,32 +393,15 @@ public class MainActivity extends AppCompatActivity
 
         turnCameraRightButton.setOnTouchListener(new View.OnTouchListener() {
 
-            private Handler handler;
-
-            Runnable sendMessage = new Runnable() {
-                @Override
-                public void run() {
-                    if (!mConnection.isConnected()) { startConnexion(); }
-                    mConnection.sendTextMessage("camera;turnRight");
-                    handler.postDelayed(this, 500);
-                }
-            };
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    /*if (handler != null) { return true; }
-                    handler = new Handler();
-                    handler.postDelayed(sendMessage, 100);*/
                     if (!mConnection.isConnected()) { startConnexion(); }
-                    mConnection.sendTextMessage("camera;turnRight");
+                    if (mConnection.isConnected()) { mConnection.sendTextMessage("camera;turnRight"); }
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    /*if (handler == null) return true;
-                    handler.removeCallbacks(sendMessage);
-                    handler = null;*/
                     if (!mConnection.isConnected()) { startConnexion(); }
-                    mConnection.sendTextMessage("camera;stopRotation");
+                    if (mConnection.isConnected()) { mConnection.sendTextMessage("camera;stopRotation"); }
                 }
                 return false;
             }
@@ -373,18 +423,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    /*if (handler != null) { return true; }
-                    handler = new Handler();
-                    handler.postDelayed(sendMessage, 100);*/
                     if (!mConnection.isConnected()) { startConnexion(); }
-                    mConnection.sendTextMessage("camera;turnLeft");
+                    if (mConnection.isConnected()) { mConnection.sendTextMessage("camera;turnLeft"); }
                 }
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    /*if (handler == null) return true;
-                    handler.removeCallbacks(sendMessage);
-                    handler = null;*/
                     if (!mConnection.isConnected()) { startConnexion(); }
-                    mConnection.sendTextMessage("camera;stopRotation");
+                    if (mConnection.isConnected()) { mConnection.sendTextMessage("camera;stopRotation"); }
                 }
                 return false;
             }
@@ -503,6 +547,39 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+        /*****************************************************************************************/
+        /*************************** TEST RECO VOCALE SPHINX *************************************/
+        /******************************************************************************************/
+
+        new AsyncTask<Void, Void, Exception>() {
+            @Override
+            protected Exception doInBackground(Void... params) {
+                try {
+                    Assets assets = new Assets(MainActivity.this);
+                    File assetDir = assets.syncAssets();
+                    setupRecognizer(assetDir);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return e;
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Exception result) {
+                if (result != null) {
+
+                } else {
+                    switchSearch(KWS_SEARCH);
+                }
+            }
+        }.execute();
+
+        /*********************************************************************************************/
+        /***************************** FIN TEST RECO VOCALE SPHINX ***********************************/
+        /********************************************************************************************/
+
     }
 
     private void startConnexion()
@@ -534,4 +611,198 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public class StreamReader extends AsyncTask<String, Void, MjpegInputStream> {
+
+        @Override
+        protected MjpegInputStream doInBackground(String... params) {
+            return MjpegInputStream.read(streamAddress);
+        }
+
+        protected void onPostExecute(MjpegInputStream result) {
+            mv.setSource(result);
+            mv.setDisplayMode(MjpegView.SIZE_BEST_FIT);
+            mv.showFps(false);
+        }
+    }
+
+    /***********************************************************************/
+    /******************* RECONNAISSANCE VOCALE ****************************/
+    /*********************************************************************/
+
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+
+    /**
+     * Showing google speech input dialog
+     * */
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Receiving speech input
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    if (!mConnection.isConnected()) { startConnexion(); }
+                    if(!vocalCommandAnalyser.vocalCommandProcessing(mConnection, result.get(0))) {
+                        Toast.makeText(getApplicationContext(),
+                                "Requête invalide, veuillez répéter.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+    }
+
+
+    /*******************************************************************************************/
+    /**************** TEST RECO VOCALE SPHINX **************************************************/
+    /********************************************************************************************/
+    /* Named searches allow to quickly reconfigure the decoder */
+    private static final String KWS_SEARCH = "wakeup";
+    private static final String SEARCH = "recherche";
+
+    /* Keyword we are looking for to activate menu */
+    private static final String KEYPHRASE = "activation contrôle vocal";
+    private static final String STOPPHRASE = "arrêt contrôle vocal";
+
+    private SpeechRecognizer recognizer;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        recognizer.cancel();
+        recognizer.shutdown();
+    }
+
+    /**
+     * In partial result we get quick updates about current hypothesis. In
+     * keyword spotting mode we can react here, in other modes we need to wait
+     * for final result in onResult.
+     */
+    @Override
+    public void onPartialResult(Hypothesis hypothesis) {
+        if (hypothesis == null)
+            return;
+
+        String text = hypothesis.getHypstr();
+        if (text.equals(KEYPHRASE)) {
+            switchSearch(SEARCH);
+        }
+        else if (recognizer.getSearchName().compareTo(SEARCH) == 0) {
+            if (text.equals(STOPPHRASE)) { switchSearch(KWS_SEARCH); }
+            else { switchSearch(SEARCH); }
+            /*Toast.makeText(getApplicationContext(),
+                    text,
+                    Toast.LENGTH_SHORT).show();
+            Log.i("TEST TOAST", "TEST TOAST");*/
+        }
+    }
+
+    /**
+     * This callback is called when we stop the recognizer.
+     */
+    @Override
+    public void onResult(Hypothesis hypothesis) {
+        if (hypothesis != null) {
+            String text = hypothesis.getHypstr();
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+    }
+
+    /**
+     * We stop recognizer here to get a final result
+     */
+    @Override
+    public void onEndOfSpeech() {
+        if (!recognizer.getSearchName().equals(KWS_SEARCH))
+            switchSearch(KWS_SEARCH);
+    }
+
+    private void switchSearch(String searchName) {
+        recognizer.stop();
+
+        // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
+        if (searchName.equals(KWS_SEARCH))
+            recognizer.startListening(searchName);
+        else
+            recognizer.startListening(searchName, 10000);
+
+    }
+
+    private void setupRecognizer(File assetsDir) throws IOException {
+        // The recognizer can be configured to perform multiple searches
+        // of different kind and switch between them
+
+        recognizer = defaultSetup()
+                .setAcousticModel(new File(assetsDir, "cmusphinx-fr-ptm-5.2"))
+                .setDictionary(new File(assetsDir, "fr.dict"))
+
+                // To disable logging of raw audio comment out this call (takes a lot of space on the device)
+                .setRawLogDir(assetsDir)
+
+                // Threshold to tune for keyphrase to balance between false alarms and misses
+                .setKeywordThreshold(1e-45f)
+
+                // Use context-independent phonetic search, context-dependent is too slow for mobile
+                .setBoolean("-allphone_ci", true)
+
+                .getRecognizer();
+        recognizer.addListener(this);
+
+        /** In your application you might not need to add all those searches.
+         * They are added here for demonstration. You can leave just one.
+         */
+
+        // Create keyword-activation search.
+        recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
+
+
+        File languageModel = new File(assetsDir, "fr.gram");
+        recognizer.addGrammarSearch(SEARCH, languageModel);
+    }
+
+    @Override
+    public void onError(Exception error) {
+        Toast.makeText(getApplicationContext(),
+                error.getMessage(),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTimeout() {
+        switchSearch(KWS_SEARCH);
+    }
+
+
+    /*********************************************************************************************/
+    /***************** FIN TEST RECO VOCALE SPHINX **********************************************/
+    /*********************************************************************************************/
+
+
+
 }
+

@@ -8,4 +8,6 @@
     <string name="on">ON</string>
     <string name="off">OFF</string>
     <string name="speed_lock_checkbox_text">Vitesse bloquée</string>
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
 </resources>

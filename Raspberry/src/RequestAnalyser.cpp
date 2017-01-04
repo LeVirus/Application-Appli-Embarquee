@@ -17,8 +17,16 @@ void RequestAnalyser::analyse(string request)
 			RobotControl::reverse();
 		}
 		else if (requestSplitted.at(1) == "speed") {
-			int speed = std::stoi(requestSplitted.at(2));
-			RobotControl::setSpeed(speed);
+			if (requestSplitted.at(2) == "speedUp") {
+				RobotControl::speedUp();
+			}
+			else if (requestSplitted.at(2) == "slowDown") {
+				RobotControl::slowDown();
+			}
+			else {}
+				int speed = std::stoi(requestSplitted.at(2));
+				RobotControl::setSpeed(speed);
+			}
 		}
 		else if (requestSplitted.at(1) == "wheels") {
 			string direction = requestSplitted.at(2);
