@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar fr;
+
+public <fr> = (stop | avancer | avance | reculer | recule | avancer à gauche | avancer à droite | tourne | à | vers | la | droite | gauche | démarrer | démarre | accélérer | accélère | ralentir | ralentis | plus vite | moins vite | caméra | arrêter | arrêt | arrête | désactive | désactivation);
