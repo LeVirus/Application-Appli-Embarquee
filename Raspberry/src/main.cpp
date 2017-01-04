@@ -1,6 +1,6 @@
 #include <iostream>
 #include "WebsocketServer.h"
-#include "RecognitionSystem.h"
+//#include "RecognitionSystem.h"
 
 int main(int argc, char* argv[])
 {
