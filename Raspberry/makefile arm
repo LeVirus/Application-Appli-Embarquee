@@ -2,7 +2,7 @@ Include=include/
 Src=src/
 
 all: $(Include)WebsocketServer.h $(Src)WebsocketServer.cpp $(Include)LogStream.h $(Src)LogStream.cpp $(Include)RequestAnalyser.h $(Src)RequestAnalyser.cpp $(Include)Utilities.h $(Src)Utilities.cpp $(Include)RobotControl.h $(Src)RobotControl.cpp $(Src)main.cpp
-	/home/administrateur/x-tools/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-g++ -ftime-report -std=c++0x $(Src)WebsocketServer.cpp $(Src)LogStream.cpp $(Src)RequestAnalyser.cpp $(Src)Utilities.cpp $(Src)RobotControl.cpp $(Src)main.cpp -o WebsocketServer.exe -static-libstdc++ -L lib -I include/ -l boost_system_arm -l boost_thread_arm -lpthread -lwiringPi
+	/home/dream/x-tools/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-g++ -ftime-report -std=c++0x $(Src)WebsocketServer.cpp $(Src)LogStream.cpp $(Src)RequestAnalyser.cpp $(Src)Utilities.cpp $(Src)RobotControl.cpp $(Src)main.cpp -o WebsocketServer.exe -static-libstdc++ -L lib -I include/ -l boost_system_arm -l boost_thread_arm -lpthread -lwiringPi -lopencv_imgproc -lopencv_imgcodecs -lopencv_objdetect -lopencv_core -lopencv_highgui
 clean:
 	rm -rf *.o
 mrproper: clean
