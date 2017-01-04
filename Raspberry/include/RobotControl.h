@@ -24,7 +24,7 @@ class RobotControl
 		static void turnCameraLeft();
 		static void turnCameraRight();
 		static void stopCameraRotation();
-		static void speddUp();
+		static void speedUp();
 		static void slowDown();
 	
 	private:
