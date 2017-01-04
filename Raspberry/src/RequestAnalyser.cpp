@@ -23,7 +23,7 @@ void RequestAnalyser::analyse(string request)
 			else if (requestSplitted.at(2) == "slowDown") {
 				RobotControl::slowDown();
 			}
-			else {}
+			else {
 				int speed = std::stoi(requestSplitted.at(2));
 				RobotControl::setSpeed(speed);
 			}
