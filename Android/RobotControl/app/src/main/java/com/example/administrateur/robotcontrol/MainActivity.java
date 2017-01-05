@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     private static final String streamAddress = "http://192.168.0.35:8081";
 
     private VocalCommandAnalyser vocalCommandAnalyser;
+    private VoiceSynthesizer voiceSynthesizer;
 
     private ImageButton leftButton;
     private ImageButton rightButton;
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         startConnexion();
 
         vocalCommandAnalyser = new VocalCommandAnalyser();
+        voiceSynthesizer = new VoiceSynthesizer(this);
 
         //Récupération des éléments graphiques
         /*leftButton = (ImageButton) findViewById(R.id.leftButton);
@@ -726,7 +728,13 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-            if (text.compareTo(KEYPHRASE) != 0 && text.compareTo(STOPPHRASE) != 0) { vocalCommandAnalyser.vocalCommandProcessing(mConnection, text); }
+            if (text.compareTo(KEYPHRASE) == 0) {
+                voiceSynthesizer.speak("Contrôle vocal activé");
+            }
+            else if (text.compareTo(STOPPHRASE) == 0) {
+                voiceSynthesizer.speak("Contrôle vocal désactivé");
+            }
+            else { vocalCommandAnalyser.vocalCommandProcessing(mConnection, text); }
         }
     }
 

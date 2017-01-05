@@ -88,7 +88,7 @@ void RobotControl::stop()
 	softPwmWrite(motorLDPWM, 0);
 	softPwmWrite(motorRDPWM, 0);
 	
-	direction = stopped;
+	direction = "stopped";
 }
 
 void RobotControl::forward()
@@ -120,7 +120,7 @@ void RobotControl::reverse()
 	digitalWrite(motorRDIN1, LOW);
 	digitalWrite(motorRDIN2, HIGH);
 	
-	directio = "reverse";
+	direction = "reverse";
 }
 
 void RobotControl::setSpeed(int speed)
@@ -212,13 +212,13 @@ void RobotControl::turnLeftReverse()
 	digitalWrite(motorRDIN2, HIGH);
 }
 
-void turnLeft()
+void RobotControl::turnLeft()
 {
 	if (direction == "reverse") { turnLeftReverse(); }
 	else { turnLeftForward(); }
 }
 
-void turnRight()
+void RobotControl::turnRight()
 {
 	if (direction == "reverse") { turnRightReverse(); }
 	else { turnRightForward(); }
