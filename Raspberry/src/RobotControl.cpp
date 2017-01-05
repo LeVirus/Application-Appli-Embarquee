@@ -14,7 +14,8 @@ int RobotControl::motorRDIN2 = 11;
 int RobotControl::motorRDPWM = 6;
 bool RobotControl::initialised = false;
 int RobotControl::speed = 100;
-int RobotControl::servomotor = 7;					
+int RobotControl::servomotor = 7;
+string RobotControl::direction = "stopped";					
 
 void RobotControl::init()
 {
@@ -86,6 +87,8 @@ void RobotControl::stop()
 	softPwmWrite(motorRTPWM, 0);
 	softPwmWrite(motorLDPWM, 0);
 	softPwmWrite(motorRDPWM, 0);
+	
+	direction = stopped;
 }
 
 void RobotControl::forward()
@@ -100,6 +103,8 @@ void RobotControl::forward()
 	digitalWrite(motorLDIN2, LOW);
 	digitalWrite(motorRDIN1, HIGH);
 	digitalWrite(motorRDIN2, LOW);
+	
+	direction = "forward";
 }
 
 void RobotControl::reverse()
@@ -114,6 +119,8 @@ void RobotControl::reverse()
 	digitalWrite(motorLDIN2, HIGH);
 	digitalWrite(motorRDIN1, LOW);
 	digitalWrite(motorRDIN2, HIGH);
+	
+	directio = "reverse";
 }
 
 void RobotControl::setSpeed(int speed)
@@ -203,6 +210,18 @@ void RobotControl::turnLeftReverse()
 	digitalWrite(motorLDIN2, LOW);
 	digitalWrite(motorRDIN1, LOW);
 	digitalWrite(motorRDIN2, HIGH);
+}
+
+void turnLeft()
+{
+	if (direction == "reverse") { turnLeftReverse(); }
+	else { turnLeftForward(); }
+}
+
+void turnRight()
+{
+	if (direction == "reverse") { turnRightReverse(); }
+	else { turnRightForward(); }
 }
 
 void RobotControl::turnCameraRight()

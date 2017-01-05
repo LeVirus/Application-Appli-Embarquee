@@ -683,7 +683,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
     /* Keyword we are looking for to activate menu */
     private static final String KEYPHRASE = "activation contrôle vocal";
-    private static final String STOPPHRASE = "arrêt contrôle vocal";
+    private static final String STOPPHRASE = "fin";
 
     private SpeechRecognizer recognizer;
 
@@ -726,6 +726,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            if (text.compareTo(KEYPHRASE) != 0 && text.compareTo(STOPPHRASE) != 0) { vocalCommandAnalyser.vocalCommandProcessing(mConnection, text); }
         }
     }
 
@@ -746,10 +747,10 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         recognizer.stop();
 
         // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
-        if (searchName.equals(KWS_SEARCH))
+        //if (searchName.equals(KWS_SEARCH))
             recognizer.startListening(searchName);
-        else
-            recognizer.startListening(searchName, 10000);
+        /*else
+            recognizer.startListening(searchName, 10000);*/
 
     }
 

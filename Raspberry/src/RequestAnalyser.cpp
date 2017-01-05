@@ -60,6 +60,12 @@ void RequestAnalyser::analyse(string request)
 			else if (direction == "rightReverse") {
 				RobotControl::turnRightReverse();
 			}
+			else if (direction == "right") {
+				RobotControl::turnRight();
+			}
+			else if (direction == "left") {
+				RobotControl::turnLeft();
+			}
 		}
 	}
 	else if (requestSplitted.at(0) == "camera") {

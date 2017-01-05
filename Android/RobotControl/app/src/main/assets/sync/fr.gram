@@ -2,4 +2,40 @@
 
 grammar fr;
 
-public <fr> = (stop | avancer | avance | reculer | recule | avancer à gauche | avancer à droite | tourne | à | vers | la | droite | gauche | démarrer | démarre | accélérer | accélère | ralentir | ralentis | plus vite | moins vite | caméra | arrêter | arrêt | arrête | désactive | désactivation);
+<fr> = (stop | avancer | avance | reculer | recule | avancer à gauche | avancer à droite | démarrer | démarre | accélérer | accélère | ralentir | ralentis | plus vite | moins vite | caméra | arrêter | arrêt | arrête | désactive | désactivation | contrôle vocal);
+
+<préposition> = (à | de | par | pour | sans | sur | avec | chez | vers | dans | entre | jusque | jusqu'à | hors);
+
+<article défini> = (le | la | les);
+
+<article indéfini> = (un | une | des);
+
+<article partitif> = (du | de la | des);
+
+<arrêter> = (arrêter | arrêt | arrête | stop);
+
+<avancer> = (avancer | avance);
+
+<démarrer> = (démarrer | démarre);
+
+<accélérer> = (accélérer | accélère);
+
+<ralentir> = (ralentir | ralentis);
+
+<désactiver> = (désactiver | désactive);
+
+<verbe> = (<arrêter> | <avancer> | <démarrer> | <accélérer> | <ralentir>);
+
+<nom> = (désactivation | contrôle vocal);
+
+<direction> = (droite | gauche);
+
+<caméra> = (caméra | webcam);
+
+<grammaire> = ( <verbe> [ [ <article défini> ] <caméra> ] [ <préposition> [ <article défini> ] <direction> ] | <nom> [ <article partitif> ] <nom> );
+
+<action basique> = (<arrêter> | <avancer> | <démarrer> | <accélérer> | <ralentir>);
+
+<tourner> = (tourner | tourne);
+
+public <grammaire2> = (stop | avance | recule | gauche | droite | démarre | accélère | ralentis | caméra gauche | caméra droite | caméra immobile | fin);

@@ -23,6 +23,8 @@ public class VocalCommandAnalyser
     private ArrayList<String> turnLeftForwardKeywords;
     private ArrayList<String> turnRightReverseKeywords;
     private ArrayList<String> turnLeftReverseKeywords;
+    private ArrayList<String> rightKeywords;
+    private ArrayList<String> leftKeywords;
 
     public VocalCommandAnalyser()
     {
@@ -44,6 +46,7 @@ public class VocalCommandAnalyser
 
         stopKeywords = new ArrayList<String>();
         stopKeywords.add("stop");
+        stopKeywords.add("arrêt");
         stopKeywords.add("arrête");
         stopKeywords.add("arrêter");
 
@@ -69,6 +72,7 @@ public class VocalCommandAnalyser
         stopCameraRotationKeywords.add("arrête caméra");
         stopCameraRotationKeywords.add("arrêter caméra");
         stopCameraRotationKeywords.add("arrêt caméra");
+        stopCameraRotationKeywords.add("caméra immobile");
 
         speedUpKeywords = new ArrayList<String>();
         speedUpKeywords.add("accélère");
@@ -103,6 +107,20 @@ public class VocalCommandAnalyser
         turnLeftReverseKeywords.add("recule gauche");
         turnLeftReverseKeywords.add("reculer à gauche");
         turnLeftReverseKeywords.add("reculer gauche");
+
+        rightKeywords = new ArrayList<String>();
+        rightKeywords.add("droite");
+        rightKeywords.add("tourne à droite");
+        rightKeywords.add("tourne droite");
+        rightKeywords.add("tourner à droite");
+        rightKeywords.add("tourner droite");
+
+        leftKeywords = new ArrayList<String>();
+        leftKeywords.add("gauche");
+        leftKeywords.add("tourne à gauche");
+        leftKeywords.add("tourne gauche");
+        leftKeywords.add("tourner à gauche");
+        leftKeywords.add("tourner gauche");
 
     }
 
@@ -159,6 +177,14 @@ public class VocalCommandAnalyser
         }
         else if (isInArrayList(turnLeftReverseKeywords, command)) {
             if (mConnection.isConnected()) { mConnection.sendTextMessage("movement;wheels;leftReverse"); }
+            return true;
+        }
+        else if (isInArrayList(leftKeywords, command)) {
+            if (mConnection.isConnected()) { mConnection.sendTextMessage("movement;wheels;left"); }
+            return true;
+        }
+        else if (isInArrayList(rightKeywords, command)) {
+            if (mConnection.isConnected()) { mConnection.sendTextMessage("movement;wheels;right"); }
             return true;
         }
         return false;
