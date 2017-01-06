@@ -5,6 +5,9 @@
 #include <iostream>
 #include <wiringPi/wiringPi.h>
 #include <wiringPi/softPwm.h>
+#include <thread>
+#include <chrono>
+#include <time.h>
 
 using namespace std;
 
@@ -46,6 +49,15 @@ class RobotControl
 		static int speed;
 		static int servomotor;
 		static string direction;
+		static int rangefinderTEcho;
+		static int rangefinderTTrig;
+		static int rangefinderDEcho;
+		static int rangefinderDTrig;
+		static bool isEnabledToMoveForward;
+		static bool isEnabledToMoveReverse;
+		
+		static PI_THREAD(rangefinderT);
+		static PI_THREAD(rangefinderD); 		
 };
 
 #endif

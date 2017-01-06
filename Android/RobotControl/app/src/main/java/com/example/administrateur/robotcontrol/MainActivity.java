@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         //Initialisation de la connexion avec le WebSocketServer
         startConnexion();
 
-        vocalCommandAnalyser = new VocalCommandAnalyser();
-        voiceSynthesizer = new VoiceSynthesizer(this);
-
         //Récupération des éléments graphiques
         /*leftButton = (ImageButton) findViewById(R.id.leftButton);
         rightButton = (ImageButton) findViewById(R.id.rightButton);*/
@@ -139,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 pointerImageView.setLayoutParams(params);
             }
         });
+
+        vocalCommandAnalyser = new VocalCommandAnalyser();
+        voiceSynthesizer = new VoiceSynthesizer(this);
 
         pointerImageView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -708,6 +708,8 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
         String text = hypothesis.getHypstr();
         if (text.equals(KEYPHRASE)) {
+            voiceSynthesizer.speak("Contrôle vocal activé");
+            while (voiceSynthesizer.isSpeaking()) { }
             switchSearch(SEARCH);
         }
         else if (recognizer.getSearchName().compareTo(SEARCH) == 0) {
@@ -728,13 +730,10 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-            if (text.compareTo(KEYPHRASE) == 0) {
-                voiceSynthesizer.speak("Contrôle vocal activé");
-            }
-            else if (text.compareTo(STOPPHRASE) == 0) {
+            if (text.compareTo(STOPPHRASE) == 0) {
                 voiceSynthesizer.speak("Contrôle vocal désactivé");
             }
-            else { vocalCommandAnalyser.vocalCommandProcessing(mConnection, text); }
+            else if (text.compareTo(KEYPHRASE) != 0) { vocalCommandAnalyser.vocalCommandProcessing(mConnection, text); }
         }
     }
 
@@ -747,8 +746,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
      */
     @Override
     public void onEndOfSpeech() {
-        if (!recognizer.getSearchName().equals(KWS_SEARCH))
-            switchSearch(KWS_SEARCH);
+
     }
 
     private void switchSearch(String searchName) {
@@ -803,7 +801,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
     @Override
     public void onTimeout() {
-        switchSearch(KWS_SEARCH);
+        /*switchSearch(KWS_SEARCH);*/
     }
 
 

@@ -15,7 +15,13 @@ int RobotControl::motorRDPWM = 6;
 bool RobotControl::initialised = false;
 int RobotControl::speed = 100;
 int RobotControl::servomotor = 7;
-string RobotControl::direction = "stopped";					
+string RobotControl::direction = "stopped";
+int RobotControl::rangefinderTEcho = 8;
+int RobotControl::rangefinderTTrig = 9;
+int RobotControl::rangefinderDEcho = 16;
+int RobotControl::rangefinderDTrig = 15;
+bool RobotControl::isEnabledToMoveForward = true;
+bool RobotControl::isEnabledToMoveReverse = true;					
 
 void RobotControl::init()
 {
@@ -38,6 +44,14 @@ void RobotControl::init()
 	pinMode(motorRDPWM, OUTPUT);
 	
 	pinMode(servomotor, OUTPUT);
+	
+	pinMode(rangefinderTTrig, OUTPUT);
+	pinMode(rangefinderTEcho, INPUT);
+	pinMode(rangefinderDTrig, OUTPUT);
+	pinMode(rangefinderDEcho, INPUT);
+	
+	piThreadCreate(rangefinderT);
+	piThreadCreate(rangefinderD);
 	
 	softPwmCreate(motorLDPWM, 100, 100);
 	softPwmCreate(motorRDPWM, 100, 100);
@@ -95,32 +109,40 @@ void RobotControl::forward()
 {
 	if (!initialised) { init(); }
 	
-	digitalWrite(motorLTIN1, HIGH);
-	digitalWrite(motorLTIN2, LOW);
-	digitalWrite(motorRTIN1, HIGH);
-	digitalWrite(motorRTIN2, LOW);
-	digitalWrite(motorLDIN1, HIGH);
-	digitalWrite(motorLDIN2, LOW);
-	digitalWrite(motorRDIN1, HIGH);
-	digitalWrite(motorRDIN2, LOW);
-	
-	direction = "forward";
+	piLock(0);
+	piUnlock(0);
+	if (isEnabledToMoveForward) {
+		digitalWrite(motorLTIN1, HIGH);
+		digitalWrite(motorLTIN2, LOW);
+		digitalWrite(motorRTIN1, HIGH);
+		digitalWrite(motorRTIN2, LOW);
+		digitalWrite(motorLDIN1, HIGH);
+		digitalWrite(motorLDIN2, LOW);
+		digitalWrite(motorRDIN1, HIGH);
+		digitalWrite(motorRDIN2, LOW);
+		
+		direction = "forward";
+	}
 }
 
 void RobotControl::reverse()
 {	
 	if (!initialised) { init(); }
 	
-	digitalWrite(motorLTIN1, LOW);
-	digitalWrite(motorLTIN2, HIGH);
-	digitalWrite(motorRTIN1, LOW);
-	digitalWrite(motorRTIN2, HIGH);
-	digitalWrite(motorLDIN1, LOW);
-	digitalWrite(motorLDIN2, HIGH);
-	digitalWrite(motorRDIN1, LOW);
-	digitalWrite(motorRDIN2, HIGH);
+	piLock(0);
+	piUnlock(0);
+	if (isEnabledToMoveReverse) {
+		digitalWrite(motorLTIN1, LOW);
+		digitalWrite(motorLTIN2, HIGH);
+		digitalWrite(motorRTIN1, LOW);
+		digitalWrite(motorRTIN2, HIGH);
+		digitalWrite(motorLDIN1, LOW);
+		digitalWrite(motorLDIN2, HIGH);
+		digitalWrite(motorRDIN1, LOW);
+		digitalWrite(motorRDIN2, HIGH);
 	
-	direction = "reverse";
+		direction = "reverse";
+	}
 }
 
 void RobotControl::setSpeed(int speed)
@@ -161,55 +183,71 @@ void RobotControl::turnRightForward()
 {
 	if (!initialised) { init(); }
 	
-	digitalWrite(motorLTIN1, HIGH);
-	digitalWrite(motorLTIN2, LOW);
-	digitalWrite(motorRTIN1, LOW);
-	digitalWrite(motorRTIN2, HIGH);
-	digitalWrite(motorLDIN1, HIGH);
-	digitalWrite(motorLDIN2, LOW);
-	digitalWrite(motorRDIN1, HIGH);
-	digitalWrite(motorRDIN2, LOW);
+	piLock(0);
+	piUnlock(0);
+	if (isEnabledToMoveForward) {
+		digitalWrite(motorLTIN1, HIGH);
+		digitalWrite(motorLTIN2, LOW);
+		digitalWrite(motorRTIN1, LOW);
+		digitalWrite(motorRTIN2, HIGH);
+		digitalWrite(motorLDIN1, HIGH);
+		digitalWrite(motorLDIN2, LOW);
+		digitalWrite(motorRDIN1, HIGH);
+		digitalWrite(motorRDIN2, LOW);
+	}
 }
 void RobotControl::turnLeftForward()
 {
 	if (!initialised) { init(); }
 	
-	digitalWrite(motorLTIN1, LOW);
-	digitalWrite(motorLTIN2, HIGH);
-	digitalWrite(motorRTIN1, HIGH);
-	digitalWrite(motorRTIN2, LOW);
-	digitalWrite(motorLDIN1, HIGH);
-	digitalWrite(motorLDIN2, LOW);
-	digitalWrite(motorRDIN1, HIGH);
-	digitalWrite(motorRDIN2, LOW);
+	piLock(0);
+	piUnlock(0);
+	if (isEnabledToMoveForward) {
+		digitalWrite(motorLTIN1, LOW);
+		digitalWrite(motorLTIN2, HIGH);
+		digitalWrite(motorRTIN1, HIGH);
+		digitalWrite(motorRTIN2, LOW);
+		digitalWrite(motorLDIN1, HIGH);
+		digitalWrite(motorLDIN2, LOW);
+		digitalWrite(motorRDIN1, HIGH);
+		digitalWrite(motorRDIN2, LOW);
+	}
 }
 
 void RobotControl::turnRightReverse()
 {
 	if (!initialised) { init(); }
 	
-	digitalWrite(motorLTIN1, LOW);
-	digitalWrite(motorLTIN2, HIGH);
-	digitalWrite(motorRTIN1, LOW);
-	digitalWrite(motorRTIN2, HIGH);
-	digitalWrite(motorLDIN1, LOW);
-	digitalWrite(motorLDIN2, HIGH);
-	digitalWrite(motorRDIN1, HIGH);
-	digitalWrite(motorRDIN2, LOW);
+	piLock(0);
+	piUnlock(0);
+	if (isEnabledToMoveReverse) {
+		digitalWrite(motorLTIN1, LOW);
+		digitalWrite(motorLTIN2, HIGH);
+		digitalWrite(motorRTIN1, LOW);
+		digitalWrite(motorRTIN2, HIGH);
+		digitalWrite(motorLDIN1, LOW);
+		digitalWrite(motorLDIN2, HIGH);
+		digitalWrite(motorRDIN1, HIGH);
+		digitalWrite(motorRDIN2, LOW);
+	}
 }
 
 void RobotControl::turnLeftReverse()
 {
 	if (!initialised) { init(); }
 	
-	digitalWrite(motorLTIN1, LOW);
-	digitalWrite(motorLTIN2, HIGH);
-	digitalWrite(motorRTIN1, LOW);
-	digitalWrite(motorRTIN2, HIGH);
-	digitalWrite(motorLDIN1, HIGH);
-	digitalWrite(motorLDIN2, LOW);
-	digitalWrite(motorRDIN1, LOW);
-	digitalWrite(motorRDIN2, HIGH);
+	piLock(0);
+	piUnlock(0);
+	if (isEnabledToMoveReverse) {
+		digitalWrite(motorLTIN1, LOW);
+		digitalWrite(motorLTIN2, HIGH);
+		digitalWrite(motorRTIN1, LOW);
+		digitalWrite(motorRTIN2, HIGH);
+		digitalWrite(motorLDIN1, HIGH);
+		digitalWrite(motorLDIN2, LOW);
+		digitalWrite(motorRDIN1, LOW);
+		digitalWrite(motorRDIN2, HIGH);
+	}
 }
 
 void RobotControl::turnLeft()
@@ -248,4 +286,64 @@ void RobotControl::stopCameraRotation()
 	
 	softPwmCreate(servomotor, 0, 0);
 	softPwmWrite(servomotor,0);
+}
+
+RobotControl::PI_THREAD(rangefinderT)
+{
+	digitalWrite(rangefinderTEcho, LOW);
+	digitalWrite(rangefinderTTrig, LOW);
+	std::this_thread::sleep_for (std::chrono::seconds(2));
+	time_t start;
+	time_t end;
+	double duration;
+	double distance;
+	while (1) {
+		digitalWrite(rangefinderTTrig, HIGH);
+		std::this_thread::sleep_for (std::chrono::seconds(0.00001));
+		digitalWrite(rangefinderTTrig, LOW);
+		while (rangefinderTEcho == LOW) { start = time(NULL); }
+		while (rangefinderTEcho == HIGH) { end = time(NULL); }
+		duration = difftime(start, end);
+		distance = 34300*(duration/2);
+		if (distance > 15 || distance < 10) {
+			piLock(0);
+			stop();
+			isEnabledToMoveForward = false;
+			piUnlock(0);
+		}
+		else {
+			isEnabledToMoveForward = true;
+		}
+	}
+	return NULL;
+}
+
+RobotControl::PI_THREAD(rangefinderD)
+{
+	digitalWrite(rangefinderDEcho, LOW);
+	digitalWrite(rangefinderDTrig, LOW);
+	std::this_thread::sleep_for (std::chrono::seconds(2));
+	time_t start;
+	time_t end;
+	double duration;
+	double distance;
+	while (1) {
+		digitalWrite(rangefinderDTrig, HIGH);
+		std::this_thread::sleep_for (std::chrono::seconds(0.00001));
+		digitalWrite(rangefinderDTrig, LOW);
+		while (rangefinderDEcho == LOW) { start = time(NULL); }
+		while (rangefinderDEcho == HIGH) { end = time(NULL); }
+		duration = difftime(start, end);
+		distance = 34300*(duration/2);
+		if (distance > 15 || distance < 10) {
+			piLock(0);
+			stop();
+			isEnabledToMoveReverse = false;
+			piUnlock(0);
+		}
+		else {
+			isEnabledToMoveForward = true;
+		}
+	}
+	return NULL;
 }
