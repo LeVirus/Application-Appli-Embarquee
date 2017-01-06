@@ -54,10 +54,7 @@ class RobotControl
 		static int rangefinderDEcho;
 		static int rangefinderDTrig;
 		static bool isEnabledToMoveForward;
-		static bool isEnabledToMoveReverse;
-		
-		static PI_THREAD(rangefinderT);
-		static PI_THREAD(rangefinderD); 		
+		static bool isEnabledToMoveReverse;		
 };
 
 #endif

@@ -50,6 +50,66 @@ void RobotControl::init()
 	pinMode(rangefinderDTrig, OUTPUT);
 	pinMode(rangefinderDEcho, INPUT);
 	
+PI_THREAD(rangefinderT)
+{
+	digitalWrite(rangefinderTEcho, LOW);
+	digitalWrite(rangefinderTTrig, LOW);
+	std::this_thread::sleep_for (std::chrono::seconds(2));
+	time_t start;
+	time_t end;
+	double duration;
+	double distance;
+	while (1) {
+		digitalWrite(rangefinderTTrig, HIGH);
+		std::this_thread::sleep_for (std::chrono::seconds(0.00001));
+		digitalWrite(rangefinderTTrig, LOW);
+		while (rangefinderTEcho == LOW) { start = time(NULL); }
+		while (rangefinderTEcho == HIGH) { end = time(NULL); }
+		duration = difftime(start, end);
+		distance = 34300*(duration/2);
+		if (distance > 15 || distance < 10) {
+			piLock(0);
+			stop();
+			isEnabledToMoveForward = false;
+			piUnlock(0);
+		}
+		else {
+			isEnabledToMoveForward = true;
+		}
+	}
+	return NULL;
+}
+
+PI_THREAD(rangefinderD)
+{
+	digitalWrite(rangefinderDEcho, LOW);
+	digitalWrite(rangefinderDTrig, LOW);
+	std::this_thread::sleep_for (std::chrono::seconds(2));
+	time_t start;
+	time_t end;
+	double duration;
+	double distance;
+	while (1) {
+		digitalWrite(rangefinderDTrig, HIGH);
+		std::this_thread::sleep_for (std::chrono::seconds(0.00001));
+		digitalWrite(rangefinderDTrig, LOW);
+		while (rangefinderDEcho == LOW) { start = time(NULL); }
+		while (rangefinderDEcho == HIGH) { end = time(NULL); }
+		duration = difftime(start, end);
+		distance = 34300*(duration/2);
+		if (distance > 15 || distance < 10) {
+			piLock(0);
+			stop();
+			isEnabledToMoveReverse = false;
+			piUnlock(0);
+		}
+		else {
+			isEnabledToMoveForward = true;
+		}
+	}
+	return NULL;
+}
+	
 	piThreadCreate(rangefinderT);
 	piThreadCreate(rangefinderD);
 	
@@ -286,64 +346,4 @@ void RobotControl::stopCameraRotation()
 	
 	softPwmCreate(servomotor, 0, 0);
 	softPwmWrite(servomotor,0);
-}
-
-RobotControl::PI_THREAD(rangefinderT)
-{
-	digitalWrite(rangefinderTEcho, LOW);
-	digitalWrite(rangefinderTTrig, LOW);
-	std::this_thread::sleep_for (std::chrono::seconds(2));
-	time_t start;
-	time_t end;
-	double duration;
-	double distance;
-	while (1) {
-		digitalWrite(rangefinderTTrig, HIGH);
-		std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		digitalWrite(rangefinderTTrig, LOW);
-		while (rangefinderTEcho == LOW) { start = time(NULL); }
-		while (rangefinderTEcho == HIGH) { end = time(NULL); }
-		duration = difftime(start, end);
-		distance = 34300*(duration/2);
-		if (distance > 15 || distance < 10) {
-			piLock(0);
-			stop();
-			isEnabledToMoveForward = false;
-			piUnlock(0);
-		}
-		else {
-			isEnabledToMoveForward = true;
-		}
-	}
-	return NULL;
-}
-
-RobotControl::PI_THREAD(rangefinderD)
-{
-	digitalWrite(rangefinderDEcho, LOW);
-	digitalWrite(rangefinderDTrig, LOW);
-	std::this_thread::sleep_for (std::chrono::seconds(2));
-	time_t start;
-	time_t end;
-	double duration;
-	double distance;
-	while (1) {
-		digitalWrite(rangefinderDTrig, HIGH);
-		std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		digitalWrite(rangefinderDTrig, LOW);
-		while (rangefinderDEcho == LOW) { start = time(NULL); }
-		while (rangefinderDEcho == HIGH) { end = time(NULL); }
-		duration = difftime(start, end);
-		distance = 34300*(duration/2);
-		if (distance > 15 || distance < 10) {
-			piLock(0);
-			stop();
-			isEnabledToMoveReverse = false;
-			piUnlock(0);
-		}
-		else {
-			isEnabledToMoveForward = true;
-		}
-	}
-	return NULL;
 }
