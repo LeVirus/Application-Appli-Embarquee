@@ -288,7 +288,7 @@ void RobotControl::stopCameraRotation()
 	softPwmWrite(servomotor,0);
 }
 
-PI_THREAD(rangefinderT)
+PI_THREAD RobotControl::(rangefinderT)
 {
 	digitalWrite(rangefinderTEcho, LOW);
 	digitalWrite(rangefinderTTrig, LOW);
@@ -318,7 +318,7 @@ PI_THREAD(rangefinderT)
 	return NULL;
 }
 
-PI_THREAD(rangefinderD)
+PI_THREAD RobotControl::(rangefinderD)
 {
 	digitalWrite(rangefinderDEcho, LOW);
 	digitalWrite(rangefinderDTrig, LOW);
