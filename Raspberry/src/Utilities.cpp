@@ -22,5 +22,6 @@ double Utilities::average(std::vector<double> vector)
 	for (std::vector<double>::iterator it = vector.begin() ; it != vector.end(); ++it) {
 		result += (*it);
 	}
+	result = result / (double)vector.size();
 	return result;
 }

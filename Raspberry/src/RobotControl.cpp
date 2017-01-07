@@ -24,7 +24,7 @@ bool RobotControl::isEnabledToMoveForward = true;
 bool RobotControl::isEnabledToMoveReverse = true;
 vector<double> RobotControl::rangefinderTMeasures;
 vector<double> RobotControl::rangefinderDMeasures;
-int RobotControl::nbRangefinderMeasures = 5;				
+int RobotControl::nbRangefinderMeasures = 10;				
 
 void RobotControl::init()
 {
