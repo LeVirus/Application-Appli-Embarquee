@@ -305,8 +305,8 @@ void *RobotControl::rangefinderT(void *dummy)
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		usleep(10);
 		digitalWrite(rangefinderTTrig, LOW);
-		while (rangefinderTEcho == LOW) { start = time(&start); }
-		while (rangefinderTEcho == HIGH) { end = time(&end); }
+		while (rangefinderTEcho == LOW) { start = time(NULL); }
+		while (rangefinderTEcho == HIGH) { end = time(NULL); }
 		duration = difftime(start, end);
 		distance = 17150*duration;
 		std::cout << "Distance avant : " << distance << " start = " << ctime(&start) << " end = " << ctime(&end) << std::endl;
@@ -339,8 +339,8 @@ void *RobotControl::rangefinderD(void *dummy)
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		usleep(10);
 		digitalWrite(rangefinderDTrig, LOW);
-		while (rangefinderDEcho == LOW) { start = time(&start); }
-		while (rangefinderDEcho == HIGH) { end = time(&end); }
+		while (rangefinderDEcho == LOW) { start = time(NULL); }
+		while (rangefinderDEcho == HIGH) { end = time(NULL); }
 		duration = difftime(start, end);
 		distance = 17150*duration;
 		//std::cout << "Distance arrière : " << distance << " start = " << start << " end = " << end << std::endl;
