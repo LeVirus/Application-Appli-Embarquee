@@ -54,7 +54,7 @@ void RobotControl::init()
 	digitalWrite(rangefinderDEcho, LOW);
 	pinMode(rangefinderDEcho, INPUT);
 	
-	//piThreadCreate(rangefinderT);
+	piThreadCreate(rangefinderT);
 	piThreadCreate(rangefinderD);
 	
 	softPwmCreate(motorLDPWM, 100, 100);
@@ -326,28 +326,32 @@ void *RobotControl::rangefinderT(void *dummy)
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
 		}
-		waitingTime = start - start;
-		timeout = Time::now();
-		do 
-		{
-			end = Time::now();
-			waitingTime = end - timeout;
-			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
-		} while (digitalRead(rangefinderTEcho) == HIGH  && waitingTime.count() < 1.5);
-		duration = end - start;
-		//duration = difftime(start, end);
-		distance = 17150*duration.count();
-		/*duration = end - start;
-		distance = 17150*duration.total_microseconds()*1000000;*/
-		std::cout << "Distance arrière : " << distance << " duration = " << duration.count() << std::endl;
-		if (distance > 15 || distance < 10) {
-			piLock(0);
-			stop();
-			isEnabledToMoveForward = false;
-			piUnlock(0);
-		}
-		else {
-			isEnabledToMoveForward = true;
+		if (waitingTime.count() < 1.5) {
+			waitingTime = start - start;
+			timeout = Time::now();
+			do 
+			{
+				end = Time::now();
+				waitingTime = end - timeout;
+				/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
+			} while (digitalRead(rangefinderTEcho) == HIGH  && waitingTime.count() < 1.5);
+			if (waitingTime.count() < 1.5) {
+				duration = end - start;
+				//duration = difftime(start, end);
+				distance = 17150*duration.count();
+				/*duration = end - start;
+				distance = 17150*duration.total_microseconds()*1000000;*/
+				std::cout << "Distance avant : " << distance << " duration = " << duration.count() << std::endl;
+				if (distance > 15 || distance < 10) {
+					piLock(0);
+					stop();
+					isEnabledToMoveForward = false;
+					piUnlock(0);
+				}
+				else {
+					isEnabledToMoveForward = true;
+				}
+			}
 		}
 	}
 	return NULL;
@@ -383,32 +387,36 @@ void *RobotControl::rangefinderD(void *dummy)
 		{
 			digitalWrite(rangefinderDTrig, LOW);
 			start = Time::now();
-			waitingTime = start - timeout;
+			waitingTime = start - timeout;	
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
 		}
-		waitingTime = start - start;
-		timeout = Time::now();
-		do 
-		{
-			end = Time::now();
-			waitingTime = end - timeout;
-			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
-		} while (digitalRead(rangefinderDEcho) == HIGH  && waitingTime.count() < 1.5);
-		duration = end - start;
-		//duration = difftime(start, end);
-		distance = 17150*duration.count();
-		/*duration = end - start;
-		distance = 17150*duration.total_microseconds()*1000000;*/
-		std::cout << "Distance arrière : " << distance << " duration = " << duration.count() << std::endl;
-		if (distance > 15 || distance < 10) {
-			piLock(0);
-			stop();
-			isEnabledToMoveReverse = false;
-			piUnlock(0);
-		}
-		else {
-			isEnabledToMoveReverse = true;
+		if (waitingTime.count() < 1.5) {
+			waitingTime = start - start;
+			timeout = Time::now();
+			do 
+			{
+				end = Time::now();
+				waitingTime = end - timeout;
+				/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
+			} while (digitalRead(rangefinderDEcho) == HIGH  && waitingTime.count() < 1.5);
+			duration = end - start;
+			if (waitingTime.count() < 1.5) {
+				//duration = difftime(start, end);
+				distance = 17150*duration.count();
+				/*duration = end - start;
+				distance = 17150*duration.total_microseconds()*1000000;*/
+				std::cout << "Distance arrière : " << distance << " duration = " << duration.count() << std::endl;
+				if (distance > 15 || distance < 10) {
+					piLock(0);
+					stop();
+					isEnabledToMoveReverse = false;
+					piUnlock(0);
+				}
+				else {
+					isEnabledToMoveReverse = true;
+				}
+			}
 		}
 	}
 	return NULL;
