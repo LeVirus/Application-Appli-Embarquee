@@ -46,8 +46,12 @@ void RobotControl::init()
 	pinMode(servomotor, OUTPUT);
 	
 	pinMode(rangefinderTTrig, OUTPUT);
+	pinMode(rangefinderTEcho, OUTPUT);
+	digitalWrite(rangefinderTEcho, LOW);
 	pinMode(rangefinderTEcho, INPUT);
 	pinMode(rangefinderDTrig, OUTPUT);
+	pinMode(rangefinderDEcho, OUTPUT);
+	digitalWrite(rangefinderDEcho, LOW);
 	pinMode(rangefinderDEcho, INPUT);
 	
 	piThreadCreate(rangefinderT);
