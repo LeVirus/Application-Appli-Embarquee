@@ -57,8 +57,8 @@ void RobotControl::init()
 	digitalWrite(rangefinderDEcho, LOW);
 	pinMode(rangefinderDEcho, INPUT);
 	
-	piThreadCreate(rangefinderT);
-	piThreadCreate(rangefinderD);
+	//piThreadCreate(rangefinderT);
+	//piThreadCreate(rangefinderD);
 	
 	softPwmCreate(motorLDPWM, 100, 100);
 	softPwmCreate(motorRDPWM, 100, 100);
@@ -345,7 +345,7 @@ void *RobotControl::rangefinderT(void *dummy)
 					rangefinderTMeasures.erase(rangefinderTMeasures.begin());
 					average = Utilities::average(rangefinderTMeasures);
 					std::cout << "Distance avant : " << distance << " moyenne = " << average << std::endl;
-					if (average < 40 || average > 75) {
+					if (average < 40.0 || average > 75.0) {
 						if (isEnabledToMoveForward) {
 							piLock(0);
 							stop();
@@ -407,7 +407,7 @@ void *RobotControl::rangefinderD(void *dummy)
 					rangefinderDMeasures.erase(rangefinderDMeasures.begin());
 					average = Utilities::average(rangefinderDMeasures);
 					std::cout << "Distance arrière : " << distance << " moyenne = " << average << std::endl;
-					if (average < 40 || average > 75) {
+					if (average < 40.0 || average > 75.0) {
 						if (isEnabledToMoveReverse) {
 							piLock(0);
 							stop();
