@@ -305,7 +305,7 @@ void *RobotControl::rangefinderT(void *dummy)
 	auto start = Time::now();
 	auto end = Time::now();
 	auto timeout = Time::now();
-	sec waitingTime = 0;
+	sec waitingTime;
 	/*boost::posix_time::ptime start;
 	boost::posix_time::ptime end;*/
 	//double duration;
@@ -366,7 +366,7 @@ void *RobotControl::rangefinderD(void *dummy)
 	auto start = Time::now();
 	auto end = Time::now();
 	auto timeout = Time::now();
-	sec waitingTime = 0;
+	sec waitingTime;
 	/*boost::posix_time::ptime start;
 	boost::posix_time::ptime end;*/
 	//double duration;
