@@ -9,6 +9,7 @@ class Utilities
 {
 	public:
 		static std::vector<std::string> split(std::string s, std::string delimiter);
+		static double average(std::vector<double> vector);
 };
 
 #endif

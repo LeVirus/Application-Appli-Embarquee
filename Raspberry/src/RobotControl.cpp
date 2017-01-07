@@ -21,7 +21,10 @@ int RobotControl::rangefinderTTrig = 9;
 int RobotControl::rangefinderDEcho = 16;
 int RobotControl::rangefinderDTrig = 15;
 bool RobotControl::isEnabledToMoveForward = true;
-bool RobotControl::isEnabledToMoveReverse = true;					
+bool RobotControl::isEnabledToMoveReverse = true;
+vector<double> RobotControl::rangefinderTMeasures;
+vector<double> RobotControl::rangefinderDMeasures;
+int RobotControl::nbRangefinderMeasures = 5;				
 
 void RobotControl::init()
 {
@@ -297,8 +300,6 @@ void *RobotControl::rangefinderT(void *dummy)
 	digitalWrite(rangefinderTTrig, LOW);
 	
 	std::this_thread::sleep_for (std::chrono::seconds(2));
-	/*time_t start;
-	time_t end;*/
 	typedef std::chrono::high_resolution_clock Time;
     typedef std::chrono::duration<double> sec;
     sec duration;
@@ -306,16 +307,12 @@ void *RobotControl::rangefinderT(void *dummy)
 	auto end = Time::now();
 	auto timeout = Time::now();
 	sec waitingTime;
-	/*boost::posix_time::ptime start;
-	boost::posix_time::ptime end;*/
-	//double duration;
-	//boost::posix_time::time_duration duration;
 	double distance;
+	double average;
 	while (1) {
 		digitalWrite(rangefinderTTrig, LOW);
 		sleep(1);
 		digitalWrite(rangefinderTTrig, HIGH);
-		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		waitingTime = start - start;
 		timeout = Time::now();
 		while (digitalRead(rangefinderTEcho) == LOW && waitingTime.count() < 1.5)
@@ -323,8 +320,6 @@ void *RobotControl::rangefinderT(void *dummy)
 			digitalWrite(rangefinderTTrig, LOW);
 			start = Time::now();
 			waitingTime = start - timeout;
-			//time(&start);
-			//start = boost::posix_time::second_clock::local_time();
 		}
 		if (waitingTime.count() < 1.5) {
 			waitingTime = start - start;
@@ -333,23 +328,24 @@ void *RobotControl::rangefinderT(void *dummy)
 			{
 				end = Time::now();
 				waitingTime = end - timeout;
-				/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
 			} while (digitalRead(rangefinderTEcho) == HIGH  && waitingTime.count() < 1.5);
 			if (waitingTime.count() < 1.5) {
 				duration = end - start;
-				//duration = difftime(start, end);
 				distance = 17150*duration.count();
-				/*duration = end - start;
-				distance = 17150*duration.total_microseconds()*1000000;*/
-				std::cout << "Distance avant : " << distance << " duration = " << duration.count() << std::endl;
-				if (distance > 15 || distance < 10) {
-					piLock(0);
-					stop();
-					isEnabledToMoveForward = false;
-					piUnlock(0);
-				}
-				else {
-					isEnabledToMoveForward = true;
+				rangefinderTMeasures.push_back(distance);
+				if (rangefinderTMeasures.size() >= nbRangefinderMeasures) {  
+					rangefinderTMeasures.erase(rangefinderTMeasures.begin());
+					average = Utilities::average(rangefinderTMeasures);
+					std::cout << "Distance avant : " << distance << " moyenne = " << average << std::endl;
+					if (average > 15 || average < 10) {
+						piLock(0);
+						stop();
+						isEnabledToMoveForward = false;
+						piUnlock(0);
+					}
+					else {
+						isEnabledToMoveForward = true;
+					}
 				}
 			}
 		}
@@ -362,8 +358,6 @@ void *RobotControl::rangefinderD(void *dummy)
 	digitalWrite(rangefinderDTrig, LOW);
 	
 	std::this_thread::sleep_for (std::chrono::seconds(2));
-	/*time_t start;
-	time_t end;*/
 	typedef std::chrono::high_resolution_clock Time;
     typedef std::chrono::duration<double> sec;
     sec duration;
@@ -371,16 +365,12 @@ void *RobotControl::rangefinderD(void *dummy)
 	auto end = Time::now();
 	auto timeout = Time::now();
 	sec waitingTime;
-	/*boost::posix_time::ptime start;
-	boost::posix_time::ptime end;*/
-	//double duration;
-	//boost::posix_time::time_duration duration;
 	double distance;
+	double average;
 	while (1) {
 		digitalWrite(rangefinderDTrig, LOW);
 		sleep(1);
 		digitalWrite(rangefinderDTrig, HIGH);
-		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		waitingTime = start - start;
 		timeout = Time::now();
 		while (digitalRead(rangefinderDEcho) == LOW && waitingTime.count() < 1.5)
@@ -388,8 +378,6 @@ void *RobotControl::rangefinderD(void *dummy)
 			digitalWrite(rangefinderDTrig, LOW);
 			start = Time::now();
 			waitingTime = start - timeout;	
-			//time(&start);
-			//start = boost::posix_time::second_clock::local_time();
 		}
 		if (waitingTime.count() < 1.5) {
 			waitingTime = start - start;
@@ -398,23 +386,24 @@ void *RobotControl::rangefinderD(void *dummy)
 			{
 				end = Time::now();
 				waitingTime = end - timeout;
-				/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
 			} while (digitalRead(rangefinderDEcho) == HIGH  && waitingTime.count() < 1.5);
 			duration = end - start;
 			if (waitingTime.count() < 1.5) {
-				//duration = difftime(start, end);
 				distance = 17150*duration.count();
-				/*duration = end - start;
-				distance = 17150*duration.total_microseconds()*1000000;*/
-				std::cout << "Distance arrière : " << distance << " duration = " << duration.count() << std::endl;
-				if (distance > 15 || distance < 10) {
-					piLock(0);
-					stop();
-					isEnabledToMoveReverse = false;
-					piUnlock(0);
-				}
-				else {
-					isEnabledToMoveReverse = true;
+				rangefinderDMeasures.push_back(distance);
+				if (rangefinderDMeasures.size() >= nbRangefinderMeasures) {  
+					rangefinderDMeasures.erase(rangefinderDMeasures.begin());
+					average = Utilities::average(rangefinderDMeasures);
+					std::cout << "Distance arrière : " << distance << " moyenne = " << average << std::endl;
+					if (average > 15 || average < 10) {
+						piLock(0);
+						stop();
+						isEnabledToMoveReverse = false;
+						piUnlock(0);
+					}
+					else {
+						isEnabledToMoveReverse = true;
+					}
 				}
 			}
 		}

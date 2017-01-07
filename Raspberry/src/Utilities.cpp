@@ -15,3 +15,12 @@ std::vector<std::string> Utilities::split(std::string s, std::string delimiter)
 	v.push_back(s.substr(posPrec+delimiterSize, s.length()-1));
 	return v;
 }
+
+double Utilities::average(std::vector<double> vector)
+{
+	double result = 0.0;
+	for (std::vector<double>::iterator it = vector.begin() ; it != vector.end(); ++it) {
+		result += (*it);
+	}
+	return result;
+}

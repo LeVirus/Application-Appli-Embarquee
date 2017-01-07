@@ -9,7 +9,7 @@
 #include <chrono>
 #include <time.h>
 #include <unistd.h>
-//#include "boost/date_time/posix_time/posix_time.hpp"
+#include <vector>
 
 using namespace std;
 
@@ -57,6 +57,9 @@ class RobotControl
 		static int rangefinderDTrig;
 		static bool isEnabledToMoveForward;
 		static bool isEnabledToMoveReverse;
+		static vector<double> rangefinderTMeasures;
+		static vector<double> rangefinderDMeasures;
+		static int nbRangefinderMeasures;
 		
 		static PI_THREAD(rangefinderT);
 		static PI_THREAD(rangefinderD); 		
