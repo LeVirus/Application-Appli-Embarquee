@@ -313,7 +313,7 @@ void *RobotControl::rangefinderT(void *dummy)
 		digitalWrite(rangefinderTTrig, LOW);
 		while (rangefinderTEcho == LOW) {
 			auto start = Time::now();
-			duration = start - 0;
+			duration = start;
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
 		}
