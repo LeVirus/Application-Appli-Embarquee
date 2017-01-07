@@ -316,9 +316,9 @@ void *RobotControl::rangefinderT(void *dummy)
 		sleep(1);
 		digitalWrite(rangefinderTTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		waitingTime = 0;
+		waitingTime = start - start;
 		timeout = Time::now();
-		while (digitalRead(rangefinderTEcho) == LOW && waitingTime < 1.5)
+		while (digitalRead(rangefinderTEcho) == LOW && waitingTime.count() < 1.5)
 		{
 			digitalWrite(rangefinderTTrig, LOW);
 			start = Time::now();
@@ -326,14 +326,14 @@ void *RobotControl::rangefinderT(void *dummy)
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
 		}
-		waitingTime = 0;
+		waitingTime = start - start;
 		timeout = Time::now();
 		do 
 		{
 			end = Time::now();
 			waitingTime = end - timeout;
 			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
-		} while (digitalRead(rangefinderTEcho) == HIGH  && waitingTime < 1.5);
+		} while (digitalRead(rangefinderTEcho) == HIGH  && waitingTime.count() < 1.5);
 		duration = end - start;
 		//duration = difftime(start, end);
 		distance = 17150*duration.count();
@@ -377,9 +377,9 @@ void *RobotControl::rangefinderD(void *dummy)
 		sleep(1);
 		digitalWrite(rangefinderDTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		waitingTime = 0;
+		waitingTime = start - start;
 		timeout = Time::now();
-		while (digitalRead(rangefinderDEcho) == LOW && waitingTime < 1.5)
+		while (digitalRead(rangefinderDEcho) == LOW && waitingTime.count() < 1.5)
 		{
 			digitalWrite(rangefinderDTrig, LOW);
 			start = Time::now();
@@ -387,14 +387,14 @@ void *RobotControl::rangefinderD(void *dummy)
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
 		}
-		waitingTime = 0;
+		waitingTime = start - start;
 		timeout = Time::now();
 		do 
 		{
 			end = Time::now();
 			waitingTime = end - timeout;
 			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
-		} while (digitalRead(rangefinderDEcho) == HIGH  && waitingTime < 1.5);
+		} while (digitalRead(rangefinderDEcho) == HIGH  && waitingTime.count() < 1.5);
 		duration = end - start;
 		//duration = difftime(start, end);
 		distance = 17150*duration.count();
