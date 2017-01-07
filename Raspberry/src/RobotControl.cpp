@@ -345,7 +345,7 @@ void *RobotControl::rangefinderT(void *dummy)
 					rangefinderTMeasures.erase(rangefinderTMeasures.begin());
 					average = Utilities::average(rangefinderTMeasures);
 					std::cout << "Distance avant : " << distance << " moyenne = " << average << std::endl;
-					if ( isEnabledToMoveForward && (average > 40 || average < 75) ) ) {
+					if ( isEnabledToMoveForward && (average > 40 || average < 75) ) {
 						piLock(0);
 						stop();
 						isEnabledToMoveForward = false;
