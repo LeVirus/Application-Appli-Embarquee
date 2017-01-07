@@ -301,8 +301,6 @@ void *RobotControl::rangefinderT(void *dummy)
     auto start;
     auto end;
     sec duration;
-    ms d = std::chrono::duration_cast<ms>(fs);
-    std::cout << fs.count() << "s\n";
 	/*boost::posix_time::ptime start;
 	boost::posix_time::ptime end;*/
 	//double duration;
