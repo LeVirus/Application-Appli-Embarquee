@@ -316,7 +316,7 @@ void *RobotControl::rangefinderT(void *dummy)
 		//duration = difftime(start, end);
 		duration = end - start;
 		distance = 17150*duration.total_microseconds()*1000000;
-		std::cout << "Distance avant : " << distance << std::endl;
+		std::cout << "Distance avant : " << distance << " start = " << to_simple_string(start) << " end = " << to_simple_string(end) << " duration = " << duration.total_microseconds()*1000000 << std::endl;
 		if (distance > 15 || distance < 10) {
 			piLock(0);
 			stop();
