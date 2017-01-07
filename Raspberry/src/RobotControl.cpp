@@ -298,8 +298,8 @@ void *RobotControl::rangefinderT(void *dummy)
 	time_t end;*/
 	typedef std::chrono::high_resolution_clock Time;
     typedef std::chrono::duration<double> sec;
-    auto start;
-    auto end;
+    auto start = Time::now();
+    auto end = Time::now();
     sec duration;
 	/*boost::posix_time::ptime start;
 	boost::posix_time::ptime end;*/
