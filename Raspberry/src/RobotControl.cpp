@@ -311,17 +311,19 @@ void *RobotControl::rangefinderT(void *dummy)
 		digitalWrite(rangefinderTTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		usleep(10);
-		do
+		while (digitalRead(rangefinderTEcho) == LOW)
 		{
 			digitalWrite(rangefinderTTrig, LOW);
 			start = Time::now();
+			std::cout << "TEST START" << std::endl;
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
-		} while (digitalRead(rangefinderTEcho) == LOW);
+		}
 		do 
 		{
 			end = Time::now();
 			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
+			std::cout << "TEST END" << std::endl;
 		} while (digitalRead(rangefinderTEcho) == HIGH);
 		duration = end - start;
 		//duration = difftime(start, end);
