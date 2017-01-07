@@ -311,7 +311,7 @@ void *RobotControl::rangefinderT(void *dummy)
 		while (rangefinderTEcho == LOW) { start = time(NULL); }
 		while (rangefinderTEcho == HIGH) { end = time(NULL); }
 		duration = difftime(start, end);
-		distance = 17150*duration/;
+		distance = 17150*duration;
 		std::cout << "Distance avant : " << distance << std::endl;
 		if (distance > 15 || distance < 10) {
 			piLock(0);
