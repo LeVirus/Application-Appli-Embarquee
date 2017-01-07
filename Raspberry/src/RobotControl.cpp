@@ -54,7 +54,7 @@ void RobotControl::init()
 	digitalWrite(rangefinderDEcho, LOW);
 	pinMode(rangefinderDEcho, INPUT);
 	
-	piThreadCreate(rangefinderT);
+	//piThreadCreate(rangefinderT);
 	piThreadCreate(rangefinderD);
 	
 	softPwmCreate(motorLDPWM, 100, 100);
@@ -373,7 +373,6 @@ void *RobotControl::rangefinderD(void *dummy)
 		{
 			digitalWrite(rangefinderDTrig, LOW);
 			start = Time::now();
-			std::cout << "TEST START" << std::endl;
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
 		}
@@ -381,7 +380,6 @@ void *RobotControl::rangefinderD(void *dummy)
 		{
 			end = Time::now();
 			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
-			std::cout << "TEST END" << std::endl;
 		} while (digitalRead(rangefinderDEcho) == HIGH);
 		duration = end - start;
 		//duration = difftime(start, end);
