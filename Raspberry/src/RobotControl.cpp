@@ -337,13 +337,14 @@ void *RobotControl::rangefinderT(void *dummy)
 					rangefinderTMeasures.erase(rangefinderTMeasures.begin());
 					average = Utilities::average(rangefinderTMeasures);
 					std::cout << "Distance avant : " << distance << " moyenne = " << average << std::endl;
-					if (average > 15 || average < 10) {
+					if (average > 40 || average < 70) {
 						piLock(0);
 						stop();
 						isEnabledToMoveForward = false;
 						piUnlock(0);
 					}
 					else {
+						if (!isEnabledToMoveForward) { move(); }
 						isEnabledToMoveForward = true;
 					}
 				}
@@ -395,13 +396,14 @@ void *RobotControl::rangefinderD(void *dummy)
 					rangefinderDMeasures.erase(rangefinderDMeasures.begin());
 					average = Utilities::average(rangefinderDMeasures);
 					std::cout << "Distance arrière : " << distance << " moyenne = " << average << std::endl;
-					if (average > 15 || average < 10) {
+					if (average > 40 || average < 70) {
 						piLock(0);
 						stop();
 						isEnabledToMoveReverse = false;
 						piUnlock(0);
 					}
 					else {
+						if (!isEnabledToMoveReverse) { move(); }
 						isEnabledToMoveReverse = true;
 					}
 				}
