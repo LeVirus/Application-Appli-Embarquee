@@ -290,7 +290,6 @@ void RobotControl::stopCameraRotation()
 
 void *RobotControl::rangefinderT(void *dummy)
 {
-	digitalWrite(rangefinderTEcho, LOW);
 	digitalWrite(rangefinderTTrig, LOW);
 	
 	std::this_thread::sleep_for (std::chrono::seconds(2));
@@ -347,7 +346,6 @@ void *RobotControl::rangefinderT(void *dummy)
 
 void *RobotControl::rangefinderD(void *dummy)
 {
-	digitalWrite(rangefinderDEcho, LOW);
 	digitalWrite(rangefinderDTrig, LOW);
 	std::this_thread::sleep_for (std::chrono::seconds(2));
 	time_t start;
