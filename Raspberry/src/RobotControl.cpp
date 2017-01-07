@@ -317,12 +317,12 @@ void *RobotControl::rangefinderT(void *dummy)
 			start = Time::now();
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
-		} while (rangefinderTEcho == LOW);
+		} while (digitalRead(rangefinderTEcho) == LOW);
 		do 
 		{
 			end = Time::now();
 			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
-		} while (rangefinderTEcho == HIGH);
+		} while (digitalRead(rangefinderTEcho) == HIGH);
 		duration = end - start;
 		//duration = difftime(start, end);
 		distance = 17150*duration.count();
