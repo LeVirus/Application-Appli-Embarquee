@@ -314,7 +314,6 @@ void *RobotControl::rangefinderT(void *dummy)
 		sleep(1);
 		digitalWrite(rangefinderTTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		usleep(20);
 		while (digitalRead(rangefinderTEcho) == LOW)
 		{
 			digitalWrite(rangefinderTTrig, LOW);
@@ -370,7 +369,6 @@ void *RobotControl::rangefinderD(void *dummy)
 		sleep(1);
 		digitalWrite(rangefinderDTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		usleep(20);
 		while (digitalRead(rangefinderDEcho) == LOW)
 		{
 			digitalWrite(rangefinderDTrig, LOW);
