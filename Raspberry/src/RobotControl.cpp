@@ -293,17 +293,14 @@ void *RobotControl::rangefinderT(void *dummy)
 	digitalWrite(rangefinderTEcho, LOW);
 	digitalWrite(rangefinderTTrig, LOW);
 	
-	/*******************/
-	digitalWrite(rangefinderDEcho, LOW);
-	digitalWrite(rangefinderDTrig, LOW);
-	/*********************/
-	
 	std::this_thread::sleep_for (std::chrono::seconds(2));
 	time_t start;
 	time_t end;
 	double duration;
 	double distance;
 	while (1) {
+		digitalWrite(rangefinderTTrig, LOW);
+		sleep(1);
 		digitalWrite(rangefinderTTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		usleep(10);
@@ -322,34 +319,13 @@ void *RobotControl::rangefinderT(void *dummy)
 		else {
 			isEnabledToMoveForward = true;
 		}
-		
-		/****************************/
-		digitalWrite(rangefinderDTrig, HIGH);
-		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		usleep(10);
-		digitalWrite(rangefinderDTrig, LOW);
-		while (rangefinderDEcho == LOW) { start = time(NULL); }
-		while (rangefinderDEcho == HIGH) { end = time(NULL); }
-		duration = difftime(start, end);
-		distance = 17150*duration;
-		std::cout << "Distance arrière : " << distance << std::endl;
-		if (distance > 15 || distance < 10) {
-			piLock(0);
-			stop();
-			isEnabledToMoveReverse = false;
-			piUnlock(0);
-		}
-		else {
-			isEnabledToMoveForward = true;
-		}
-		/******************************/
 	}
 	return NULL;
 }
 
 void *RobotControl::rangefinderD(void *dummy)
 {
-	/*digitalWrite(rangefinderDEcho, LOW);
+	digitalWrite(rangefinderDEcho, LOW);
 	digitalWrite(rangefinderDTrig, LOW);
 	std::this_thread::sleep_for (std::chrono::seconds(2));
 	time_t start;
@@ -357,6 +333,8 @@ void *RobotControl::rangefinderD(void *dummy)
 	double duration;
 	double distance;
 	while (1) {
+		digitalWrite(rangefinderDTrig, LOW);
+		sleep(1);
 		digitalWrite(rangefinderDTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		usleep(10);
@@ -375,6 +353,6 @@ void *RobotControl::rangefinderD(void *dummy)
 		else {
 			isEnabledToMoveForward = true;
 		}
-	}*/
+	}
 	return NULL;
 }
