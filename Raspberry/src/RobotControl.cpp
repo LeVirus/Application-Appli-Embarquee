@@ -312,14 +312,20 @@ void *RobotControl::rangefinderT(void *dummy)
 		digitalWrite(rangefinderTTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
 		usleep(10);
-		digitalWrite(rangefinderTTrig, LOW);
-		while (rangefinderTEcho == LOW) {
+		while (rangefinderTEcho == LOW)
+		{
+			digitalWrite(rangefinderTTrig, LOW);
 			start = Time::now();
 			std::cout << "TEST START" << std::endl;
 			//time(&start);
 			//start = boost::posix_time::second_clock::local_time();
 		}
-		while (rangefinderTEcho == HIGH) { end = Time::now(); std::cout << "TEST END" << std::endl;/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/ }
+		while (rangefinderTEcho == HIGH)
+		{
+			end = Time::now();
+			std::cout << "TEST END" << std::endl;
+			/*time(&end);*/ /*end = boost::posix_time::second_clock::local_time();*/
+		}
 		duration = end - start;
 		//duration = difftime(start, end);
 		distance = 17150*duration.count();
