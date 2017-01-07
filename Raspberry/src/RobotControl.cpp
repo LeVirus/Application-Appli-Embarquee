@@ -121,7 +121,6 @@ void RobotControl::forward()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveForward) {
-		if (direction == "stopped") { move(); }
 		digitalWrite(motorLTIN1, HIGH);
 		digitalWrite(motorLTIN2, LOW);
 		digitalWrite(motorRTIN1, HIGH);
@@ -130,6 +129,7 @@ void RobotControl::forward()
 		digitalWrite(motorLDIN2, LOW);
 		digitalWrite(motorRDIN1, HIGH);
 		digitalWrite(motorRDIN2, LOW);
+		if (direction == "stopped") { move(); }
 		
 		direction = "forward";
 	}
@@ -142,7 +142,6 @@ void RobotControl::reverse()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveReverse) {
-		if (direction == "stopped") { move(); }
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
 		digitalWrite(motorRTIN1, LOW);
@@ -151,7 +150,8 @@ void RobotControl::reverse()
 		digitalWrite(motorLDIN2, HIGH);
 		digitalWrite(motorRDIN1, LOW);
 		digitalWrite(motorRDIN2, HIGH);
-	
+		if (direction == "stopped") { move(); }
+		
 		direction = "reverse";
 	}
 }
@@ -197,7 +197,6 @@ void RobotControl::turnRightForward()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveForward) {
-		if (direction == "stopped") { move(); }
 		digitalWrite(motorLTIN1, HIGH);
 		digitalWrite(motorLTIN2, LOW);
 		digitalWrite(motorRTIN1, LOW);
@@ -206,6 +205,7 @@ void RobotControl::turnRightForward()
 		digitalWrite(motorLDIN2, LOW);
 		digitalWrite(motorRDIN1, HIGH);
 		digitalWrite(motorRDIN2, LOW);
+		if (direction == "stopped") { move(); }
 	}
 }
 void RobotControl::turnLeftForward()
@@ -215,7 +215,6 @@ void RobotControl::turnLeftForward()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveForward) {
-		if (direction == "stopped") { move(); }
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
 		digitalWrite(motorRTIN1, HIGH);
@@ -224,6 +223,7 @@ void RobotControl::turnLeftForward()
 		digitalWrite(motorLDIN2, LOW);
 		digitalWrite(motorRDIN1, HIGH);
 		digitalWrite(motorRDIN2, LOW);
+		if (direction == "stopped") { move(); }
 	}
 }
 
@@ -234,7 +234,6 @@ void RobotControl::turnRightReverse()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveReverse) {
-		if (direction == "stopped") { move(); }
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
 		digitalWrite(motorRTIN1, LOW);
@@ -243,14 +242,13 @@ void RobotControl::turnRightReverse()
 		digitalWrite(motorLDIN2, HIGH);
 		digitalWrite(motorRDIN1, HIGH);
 		digitalWrite(motorRDIN2, LOW);
+		if (direction == "stopped") { move(); }
 	}
 }
 
 void RobotControl::turnLeftReverse()
 {
 	if (!initialised) { init(); }
-	
-	if (direction == "stopped") { move(); }
 	
 	piLock(0);
 	piUnlock(0);
@@ -263,6 +261,7 @@ void RobotControl::turnLeftReverse()
 		digitalWrite(motorLDIN2, LOW);
 		digitalWrite(motorRDIN1, LOW);
 		digitalWrite(motorRDIN2, HIGH);
+		if (direction == "stopped") { move(); }
 	}
 }
 
@@ -346,14 +345,16 @@ void *RobotControl::rangefinderT(void *dummy)
 					rangefinderTMeasures.erase(rangefinderTMeasures.begin());
 					average = Utilities::average(rangefinderTMeasures);
 					std::cout << "Distance avant : " << distance << " moyenne = " << average << std::endl;
-					if (average > 40 || average < 70) {
+					if (average > 40 || average < 75) {
 						piLock(0);
 						stop();
 						isEnabledToMoveForward = false;
 						piUnlock(0);
 					}
 					else {
+						piLock(0);
 						isEnabledToMoveForward = true;
+						piUnlock(0);
 					}
 				}
 			}
@@ -404,14 +405,16 @@ void *RobotControl::rangefinderD(void *dummy)
 					rangefinderDMeasures.erase(rangefinderDMeasures.begin());
 					average = Utilities::average(rangefinderDMeasures);
 					std::cout << "Distance arrière : " << distance << " moyenne = " << average << std::endl;
-					if (average > 40 || average < 70) {
+					if (average > 40 || average < 75) {
 						piLock(0);
 						stop();
 						isEnabledToMoveReverse = false;
 						piUnlock(0);
 					}
 					else {
+						piLock(0);
 						isEnabledToMoveReverse = true;
+						piUnlock(0);
 					}
 				}
 			}
