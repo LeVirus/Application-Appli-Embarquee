@@ -294,12 +294,12 @@ void *RobotControl::rangefinderT(void *dummy)
 	digitalWrite(rangefinderTTrig, LOW);
 	
 	std::this_thread::sleep_for (std::chrono::seconds(2));
-	/*time_t start;
-	time_t end;*/
-	boost::posix_time::ptime start;
-	boost::posix_time::ptime end;
-	//double duration;
-	boost::posix_time::time_duration duration;
+	time_t start;
+	time_t end;
+	/*boost::posix_time::ptime start;
+	boost::posix_time::ptime end;*/
+	double duration;
+	//boost::posix_time::time_duration duration;
 	double distance;
 	while (1) {
 		digitalWrite(rangefinderTTrig, LOW);
@@ -309,14 +309,15 @@ void *RobotControl::rangefinderT(void *dummy)
 		usleep(10);
 		digitalWrite(rangefinderTTrig, LOW);
 		while (rangefinderTEcho == LOW) {
-			//start = time(NULL);
-			start = boost::posix_time::second_clock::local_time();
+			time(&start);
+			//start = boost::posix_time::second_clock::local_time();
 		}
-		while (rangefinderTEcho == HIGH) { /*end = time(NULL);*/ end = boost::posix_time::second_clock::local_time(); }
-		//duration = difftime(start, end);
-		duration = end - start;
-		distance = 17150*duration.total_microseconds()*1000000;
-		std::cout << "Distance avant : " << distance << " start = " << to_simple_string(start) << " end = " << to_simple_string(end) << " duration = " << duration.total_microseconds()*1000000 << std::endl;
+		while (rangefinderTEcho == HIGH) { time(&end); /*end = boost::posix_time::second_clock::local_time();*/ }
+		duration = difftime(start, end);
+		distance = 17150*duration;
+		/*duration = end - start;
+		distance = 17150*duration.total_microseconds()*1000000;*/
+		std::cout << "Distance avant : " << distance << " start = " << start << " end = " << end << " duration = " << duration << std::endl;
 		if (distance > 15 || distance < 10) {
 			piLock(0);
 			stop();
