@@ -88,6 +88,8 @@ void RobotControl::move()
 	digitalWrite(motorRDPWM, HIGH);
 	digitalWrite(motorLTPWM, HIGH);
 	digitalWrite(motorRTPWM, HIGH);
+	
+	state = "move";
 }
 
 void RobotControl::stop()
@@ -119,6 +121,7 @@ void RobotControl::forward()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveForward) {
+		if (state == "stopped") { move(); }
 		digitalWrite(motorLTIN1, HIGH);
 		digitalWrite(motorLTIN2, LOW);
 		digitalWrite(motorRTIN1, HIGH);
@@ -139,6 +142,7 @@ void RobotControl::reverse()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveReverse) {
+		if (state == "stopped") { move(); }
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
 		digitalWrite(motorRTIN1, LOW);
@@ -193,6 +197,7 @@ void RobotControl::turnRightForward()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveForward) {
+		if (state == "stopped") { move(); }
 		digitalWrite(motorLTIN1, HIGH);
 		digitalWrite(motorLTIN2, LOW);
 		digitalWrite(motorRTIN1, LOW);
@@ -210,6 +215,7 @@ void RobotControl::turnLeftForward()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveForward) {
+		if (state == "stopped") { move(); }
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
 		digitalWrite(motorRTIN1, HIGH);
@@ -228,6 +234,7 @@ void RobotControl::turnRightReverse()
 	piLock(0);
 	piUnlock(0);
 	if (isEnabledToMoveReverse) {
+		if (state == "stopped") { move(); }
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
 		digitalWrite(motorRTIN1, LOW);
@@ -242,6 +249,8 @@ void RobotControl::turnRightReverse()
 void RobotControl::turnLeftReverse()
 {
 	if (!initialised) { init(); }
+	
+	if (state == "stopped") { move(); }
 	
 	piLock(0);
 	piUnlock(0);
@@ -344,7 +353,6 @@ void *RobotControl::rangefinderT(void *dummy)
 						piUnlock(0);
 					}
 					else {
-						if (!isEnabledToMoveForward) { move(); }
 						isEnabledToMoveForward = true;
 					}
 				}
@@ -403,7 +411,6 @@ void *RobotControl::rangefinderD(void *dummy)
 						piUnlock(0);
 					}
 					else {
-						if (!isEnabledToMoveReverse) { move(); }
 						isEnabledToMoveReverse = true;
 					}
 				}
