@@ -314,11 +314,10 @@ void *RobotControl::rangefinderT(void *dummy)
 		sleep(1);
 		digitalWrite(rangefinderTTrig, HIGH);
 		//std::this_thread::sleep_for (std::chrono::seconds(0.00001));
-		usleep(10);
-		digitalWrite(rangefinderTTrig, LOW);
-		usleep(10);
+		usleep(20);
 		while (digitalRead(rangefinderTEcho) == LOW)
 		{
+			digitalWrite(rangefinderTTrig, LOW);
 			start = Time::now();
 			std::cout << "TEST START" << std::endl;
 			//time(&start);
