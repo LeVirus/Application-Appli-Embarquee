@@ -119,7 +119,6 @@ void RobotControl::forward()
 	if (!initialised) { init(); }
 	
 	piLock(0);
-	piUnlock(0);
 	if (isEnabledToMoveForward) {
 		digitalWrite(motorLTIN1, HIGH);
 		digitalWrite(motorLTIN2, LOW);
@@ -133,6 +132,7 @@ void RobotControl::forward()
 		
 		direction = "forward";
 	}
+	piUnlock(0);
 }
 
 void RobotControl::reverse()
@@ -140,7 +140,6 @@ void RobotControl::reverse()
 	if (!initialised) { init(); }
 	
 	piLock(0);
-	piUnlock(0);
 	if (isEnabledToMoveReverse) {
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
@@ -154,6 +153,7 @@ void RobotControl::reverse()
 		
 		direction = "reverse";
 	}
+	piUnlock(0);
 }
 
 void RobotControl::setSpeed(int speed)
@@ -195,7 +195,6 @@ void RobotControl::turnRightForward()
 	if (!initialised) { init(); }
 	
 	piLock(0);
-	piUnlock(0);
 	if (isEnabledToMoveForward) {
 		digitalWrite(motorLTIN1, HIGH);
 		digitalWrite(motorLTIN2, LOW);
@@ -207,13 +206,13 @@ void RobotControl::turnRightForward()
 		digitalWrite(motorRDIN2, LOW);
 		if (direction == "stopped") { move(); }
 	}
+	piUnlock(0);
 }
 void RobotControl::turnLeftForward()
 {
 	if (!initialised) { init(); }
 	
 	piLock(0);
-	piUnlock(0);
 	if (isEnabledToMoveForward) {
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
@@ -225,6 +224,7 @@ void RobotControl::turnLeftForward()
 		digitalWrite(motorRDIN2, LOW);
 		if (direction == "stopped") { move(); }
 	}
+	piUnlock(0);
 }
 
 void RobotControl::turnRightReverse()
@@ -232,7 +232,6 @@ void RobotControl::turnRightReverse()
 	if (!initialised) { init(); }
 	
 	piLock(0);
-	piUnlock(0);
 	if (isEnabledToMoveReverse) {
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
@@ -243,6 +242,7 @@ void RobotControl::turnRightReverse()
 		digitalWrite(motorRDIN1, HIGH);
 		digitalWrite(motorRDIN2, LOW);
 		if (direction == "stopped") { move(); }
+		piUnlock(0);
 	}
 }
 
@@ -251,7 +251,6 @@ void RobotControl::turnLeftReverse()
 	if (!initialised) { init(); }
 	
 	piLock(0);
-	piUnlock(0);
 	if (isEnabledToMoveReverse) {
 		digitalWrite(motorLTIN1, LOW);
 		digitalWrite(motorLTIN2, HIGH);
@@ -263,6 +262,7 @@ void RobotControl::turnLeftReverse()
 		digitalWrite(motorRDIN2, HIGH);
 		if (direction == "stopped") { move(); }
 	}
+	piUnlock(0);
 }
 
 void RobotControl::turnLeft()
