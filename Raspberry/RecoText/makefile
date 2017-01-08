@@ -19,9 +19,9 @@ OBJ=$(SRC_BIS:.cpp=.o)
 
 EXE=exe
 
-all: $(EXE)
+all: $(EXE) 
 
-$(EXE):main.cpp 
+$(EXE):main.cpp $(OBJ)
 	$(CXX)  $(CXXFLAGS) -I $(INCLUDE_DIR) -L $(LIB_DIR) `pkg-config --libs opencv` $^ $(LDFLAGS) -o $@
 
 
