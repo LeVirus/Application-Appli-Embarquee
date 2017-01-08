@@ -16,18 +16,18 @@
     <id>UMLClass</id>
     <coordinates>
       <x>90</x>
-      <y>150</y>
+      <y>130</y>
       <w>160</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>RecognitionSystem</panel_attributes>
+    <panel_attributes>RecoProcess</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>310</x>
-      <y>150</y>
+      <x>470</x>
+      <y>140</y>
       <w>170</w>
       <h>30</h>
     </coordinates>
@@ -39,11 +39,11 @@
     <coordinates>
       <x>310</x>
       <y>80</y>
-      <w>110</w>
-      <h>90</h>
+      <w>270</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;250.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -51,16 +51,16 @@
       <x>170</x>
       <y>80</y>
       <w>90</w>
-      <h>90</h>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>70.0;10.0;10.0;70.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>570</x>
-      <y>320</y>
+      <x>630</x>
+      <y>210</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
@@ -70,8 +70,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>130</x>
-      <y>280</y>
+      <x>360</x>
+      <y>270</y>
       <w>160</w>
       <h>30</h>
     </coordinates>
@@ -81,8 +81,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>270</x>
-      <y>340</y>
+      <x>460</x>
+      <y>330</y>
       <w>160</w>
       <h>30</h>
     </coordinates>
@@ -92,8 +92,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>340</y>
+      <x>560</x>
+      <y>260</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
@@ -103,45 +103,89 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>250</x>
-      <y>170</y>
-      <w>100</w>
+      <x>420</x>
+      <y>160</y>
+      <w>90</w>
       <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>80.0;10.0;10.0;110.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>320</x>
-      <y>170</y>
+      <x>530</x>
+      <y>160</y>
+      <w>30</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>570</x>
+      <y>160</y>
+      <w>50</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>160</y>
+      <w>70</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>220</y>
+      <w>160</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Parallel_OCR</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>150</y>
       <w>60</w>
-      <h>190</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>40.0;10.0;10.0;170.0</additional_attributes>
+    <additional_attributes>40.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>190</x>
+      <y>220</y>
+      <w>160</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Parallel_extractCSER</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
-      <y>170</y>
-      <w>80</w>
-      <h>190</h>
+      <x>210</x>
+      <y>150</y>
+      <w>50</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;170.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>470</x>
-      <y>170</y>
-      <w>130</w>
-      <h>170</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;110.0;150.0</additional_attributes>
+    <additional_attributes>10.0;10.0;30.0;70.0</additional_attributes>
   </element>
 </diagram>

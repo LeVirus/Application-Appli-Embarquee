@@ -6,8 +6,6 @@ int main(int argc, char* argv[])
 {
 	WebsocketServer::init();
 	WebsocketServer::run();
-	/*RecognitionSystem rs;
-	rs.recognizeFromPic( "./chapeau.jpg");*/
 	return 0;
 	/* EXEMPLE
 	RecoProcess rp;
