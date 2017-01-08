@@ -348,7 +348,7 @@ void *RobotControl::rangefinderT(void *dummy)
 					if (average < 40.0 || average > 75.0) {
 						if (isEnabledToMoveForward) {
 							piLock(0);
-							stop();
+							if (direction == "forward") { stop(); }
 							isEnabledToMoveForward = false;
 							piUnlock(0);
 						}
@@ -410,7 +410,7 @@ void *RobotControl::rangefinderD(void *dummy)
 					if (average < 40.0 || average > 75.0) {
 						if (isEnabledToMoveReverse) {
 							piLock(0);
-							stop();
+							if (direction == "reverse") { stop(); }
 							isEnabledToMoveReverse = false;
 							piUnlock(0);
 						}
