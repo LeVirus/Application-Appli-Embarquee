@@ -132,6 +132,7 @@ void RobotControl::forward()
 		
 		direction = "forward";
 	}
+	else { stop(); }
 	piUnlock(0);
 }
 
@@ -153,6 +154,7 @@ void RobotControl::reverse()
 		
 		direction = "reverse";
 	}
+	else { stop(); }
 	piUnlock(0);
 }
 
@@ -206,6 +208,7 @@ void RobotControl::turnRightForward()
 		digitalWrite(motorRDIN2, LOW);
 		if (direction == "stopped") { move(); }
 	}
+	else { stop(); }
 	piUnlock(0);
 }
 void RobotControl::turnLeftForward()
@@ -224,6 +227,7 @@ void RobotControl::turnLeftForward()
 		digitalWrite(motorRDIN2, LOW);
 		if (direction == "stopped") { move(); }
 	}
+	else { stop(); }
 	piUnlock(0);
 }
 
@@ -242,8 +246,9 @@ void RobotControl::turnRightReverse()
 		digitalWrite(motorRDIN1, HIGH);
 		digitalWrite(motorRDIN2, LOW);
 		if (direction == "stopped") { move(); }
-		piUnlock(0);
 	}
+	else { stop(); }
+	piUnlock(0);
 }
 
 void RobotControl::turnLeftReverse()
@@ -262,6 +267,7 @@ void RobotControl::turnLeftReverse()
 		digitalWrite(motorRDIN2, HIGH);
 		if (direction == "stopped") { move(); }
 	}
+	else { stop(); }
 	piUnlock(0);
 }
 
@@ -283,7 +289,7 @@ void RobotControl::turnCameraRight()
 	
 	softPwmCreate(servomotor, 15, 200);
 	//Valeur pour la vitesse de rotation maximale : 10
-	softPwmWrite(servomotor,13);
+	softPwmWrite(servomotor,14);
 }
 
 void RobotControl::turnCameraLeft()
