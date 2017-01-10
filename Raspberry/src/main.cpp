@@ -1,11 +1,11 @@
 #include <iostream>
 #include "WebsocketServer.h"
-#include "RecoProcess.h"
+//#include "RecoProcess.h"
 
 int main(int argc, char* argv[])
 {
 	//EXEMPLE
-	RecoProcess rp;
+	/*RecoProcess rp;
     char** debug;
     debug = new char*[1];
     debug[0] = new char;
@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     
     rp.process(0,debug);
     delete debug[0];
-        delete debug;
+        delete debug;*/
 	WebsocketServer::init();
 	WebsocketServer::run();
 	/*RecognitionSystem rs;
