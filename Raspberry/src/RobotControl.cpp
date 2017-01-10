@@ -57,8 +57,8 @@ void RobotControl::init()
 	digitalWrite(rangefinderDEcho, LOW);
 	pinMode(rangefinderDEcho, INPUT);
 	
-	piThreadCreate(rangefinderT);
-	piThreadCreate(rangefinderD);
+	//piThreadCreate(rangefinderT);
+	//piThreadCreate(rangefinderD);
 	
 	softPwmCreate(motorLDPWM, 100, 100);
 	softPwmCreate(motorRDPWM, 100, 100);
