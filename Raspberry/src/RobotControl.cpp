@@ -57,8 +57,8 @@ void RobotControl::init()
 	digitalWrite(rangefinderDEcho, LOW);
 	pinMode(rangefinderDEcho, INPUT);
 	
-	//piThreadCreate(rangefinderT);
-	//piThreadCreate(rangefinderD);
+	piThreadCreate(rangefinderT);
+	piThreadCreate(rangefinderD);
 	
 	softPwmCreate(motorLDPWM, 100, 100);
 	softPwmCreate(motorRDPWM, 100, 100);
@@ -305,6 +305,11 @@ void RobotControl::stopCameraRotation()
 
 void *RobotControl::rangefinderT(void *dummy)
 {
+	if (wiringPiSetup() == -1) {
+		std::cout << "Erreur, autorisation root requise." << std::endl;
+		exit(1);
+	};
+	
 	digitalWrite(rangefinderTTrig, LOW);
 	
 	std::this_thread::sleep_for (std::chrono::seconds(2));
@@ -367,6 +372,11 @@ void *RobotControl::rangefinderT(void *dummy)
 
 void *RobotControl::rangefinderD(void *dummy)
 {
+	if (wiringPiSetup() == -1) {
+		std::cout << "Erreur, autorisation root requise." << std::endl;
+		exit(1);
+	};
+	
 	digitalWrite(rangefinderDTrig, LOW);
 	
 	std::this_thread::sleep_for (std::chrono::seconds(2));
