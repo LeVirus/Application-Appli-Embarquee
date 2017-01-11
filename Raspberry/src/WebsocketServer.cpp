@@ -88,14 +88,14 @@ bool WebsocketServer::on_validate(connection_hdl hdl)
     websocketpp::uri_ptr uri = con->get_uri();
     string query = uri->get_query(); // returns empty string if no query string set.
 	string id = "0";
-    if (!query.empty()) {
+    /*if (!query.empty()) {
         // Split the query parameter string here, if desired.
         // We assume we extracted a string called 'id' here.
     }
     else {
         // Reject if no query parameter provided, for example.
         return false;
-    }
+    }*/
      
     /*if (pthread_rwlock_wrlock(&websocketsLock) != 0) {
         // Failed to write-lock websocketsLock.
