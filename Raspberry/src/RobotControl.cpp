@@ -444,3 +444,13 @@ void *RobotControl::rangefinderD(void *dummy)
 	}
 	return NULL;
 }
+
+void RobotControl::setIsEnabledToMoveForward(bool value)
+{
+	isEnabledToMoveForward = value;
+}
+
+void RobotControl::setIsEnabledToMoveReverse(bool value)
+{
+	isEnabledToMoveReverse = value;
+}

@@ -79,4 +79,18 @@ void RequestAnalyser::analyse(string request)
 			RobotControl::stopCameraRotation();
 		}
 	}
+	else if (requestSplitted.at(0) == "obstaclesManagement") {
+		if (requestSplitted.at(1) == "enableMoveForward") {
+			RobotControl::turnCameraLeft();
+		}
+		else if (requestSplitted.at(1) == "disableMoveForward") {
+			RobotControl::turnCameraRight();
+		}
+		else if (requestSplitted.at(1) == "enableMoveReverse") {
+			RobotControl::turnCameraRight();
+		}
+		else if (requestSplitted.at(1) == "disableMoveReverse") {
+			RobotControl::turnCameraRight();
+		}
+	}
 }

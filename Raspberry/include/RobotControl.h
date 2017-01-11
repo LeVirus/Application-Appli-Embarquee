@@ -34,6 +34,8 @@ class RobotControl
 		static void stopCameraRotation();
 		static void speedUp();
 		static void slowDown();
+		static void setIsEnabledToMoveForward(bool value);
+		static void setIsEnabledToMoveReverse(bool value);
 	
 	private:
 		static int motorLTIN1;
