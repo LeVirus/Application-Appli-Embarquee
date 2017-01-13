@@ -8,7 +8,7 @@
 #include "RecoProcess.h"
 #include <iostream>
 
-
+//code récupérer d'un exemple d'utilisation
 using namespace std;
 using namespace cv;
 using namespace cv::text;
@@ -90,7 +90,13 @@ int RecoProcess::process(int argc, char* argv[])
         cout << "ERROR: Cannot open default camera (0)." << endl;
         return -1;
     }
-
+       /* VideoCapture cap;
+    cap.open("192.168.0.35:8081");
+if(!cap.isOpened())
+    {
+        cout << "ERROR: Cannot open default camera (0)." << endl;
+        return -1;
+    }*/
     while (cap.read(frame))
     {
         double t_all = (double)getTickCount();
